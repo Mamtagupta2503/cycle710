@@ -1,7 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
-def publishresults
+def publishresults=''
 def paymentedgeapi ='Success'
 def core ='Success'
 def c3po ='Success'
