@@ -30,12 +30,12 @@ pipeline {
 					}
 					steps {
 						script{
-							try {
+							/*try { */
 								println "Performing "+ action +" on application payment-edge-api"								
 								def serverdetails = readJSON file: 'Patching_cycle_07_10/payment-edge-api.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
-								def nceserver = serverdetails.HA_NCE_SERVERS
-								def ncwserver = serverdetails.HA_NCW_SERVERS
+								def nceserver = serverdetails.NCE_SERVERS
+								def ncwserver = serverdetails.NCW_SERVERS
 								def backend = serverdetails.BACKEND
 								def sockfileloc = serverdetails.SOCKFILE
 								def server
@@ -50,12 +50,12 @@ pipeline {
 									println "NCW server are: " + server
 								}
 								performaction(haproxyservers, backend, server, action, sockfileloc )			
-							}catch(Exception e) {
+							/*}catch(Exception e) {
 								paymentedgeapi ='Failed'
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
-							}
+							} */
 						}
 					}      
 				}
