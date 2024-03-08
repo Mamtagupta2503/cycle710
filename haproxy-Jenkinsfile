@@ -145,7 +145,12 @@ pipeline {
 			}     
 			}
 		} 
-	}	 
+	}
+	post {
+	always {
+		println publishresults
+	}
+}	
 }
 def performaction(Object haproxyservers, Object backend, Object server, String action, Object sockfileloc ){
 	def result ='Success'
@@ -168,11 +173,6 @@ def performaction(Object haproxyservers, Object backend, Object server, String a
 	}
 	return result
 }
-def testperformaction(Object haproxyservers){
-	println haproxyservers
-
-}
-
 /*post {
 	always {
 		sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
@@ -182,8 +182,3 @@ def testperformaction(Object haproxyservers){
 	}
 } */
 
-post {
-	always {
-		println publishresults
-	}
-}
