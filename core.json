@@ -1,8 +1,6 @@
 {
     "HAPROXY_SERVERS": [
     "haproxy1-core.nce",
-    "haproxy2-core.nce",
-    "haproxy1-core.ncw",
     "haproxy2-core.ncw"
       
 	 ],
