@@ -1,9 +1,7 @@
 {
     "HAPROXY_SERVERS": [
     "haproxy2-test.nce", 
-	"haproxy2-test.nce",
-	"haproxy1-test.ncw",
-	"haproxy2-test.ncw"
+    "haproxy2-test.ncw"
 	 ],
 	"APPNCESERVERS": [
 	"nceserver01",
