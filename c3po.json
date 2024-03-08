@@ -1,0 +1,25 @@
+{
+    "HAPROXY_SERVERS": [
+    "haproxy1-c3po.nce",
+    "haproxy2-c3po.nce",
+    "haproxy1-c3po.ncw",
+    "haproxy2-c3po.ncw"
+      
+	 ],
+    "NCESERVERS": [
+	  "recomm-eng1-c3po-nce",
+    "recomm-eng2-c3po-nce"
+    ],
+    "NCWSERVERS": [
+	"recomm-eng1-c3po-ncw",
+  "recomm-eng2-c3po-ncw"
+    
+    ],
+    "BACKEND": [
+        "www-core_eng"
+    ],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	
+	"DIRECTORY": "/data/apps/css-core/corerec/bin"
+
+}
