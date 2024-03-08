@@ -12,13 +12,6 @@ pipeline {
     stages {
 
 		stage('Parallel execution') {
-			steps {
-				script{
-					prinltn "application" + application
-					prinltn "Action" + action
-					prinltn "datacenter" + datacenter
-				}
-			}	
 			parallel {
 				stage('payment-edge-api') {
 					when {
@@ -37,7 +30,10 @@ pipeline {
 								def backend = serverdetails.BACKEND
 								def sockfileloc = serverdetails.SOCKFILE
 								def server
-
+								prinltn "application" + application
+								prinltn "Action" + action
+								prinltn "datacenter" + datacenter
+			
 								if(datacenter =='NCE'){
 									 server = nceserver
 									 println "NCE server are: " + server
