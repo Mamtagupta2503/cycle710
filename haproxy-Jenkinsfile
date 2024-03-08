@@ -1,8 +1,9 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
-def payment-edge-api ='Success'
+def paymentedgeapi ='Success'
 def core ='Success'
+def c3po ='Success'
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
