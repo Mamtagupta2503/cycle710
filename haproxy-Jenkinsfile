@@ -16,9 +16,9 @@ pipeline {
 				stage('server details'){
 				steps {
 						script{
-							prinltn "application" + application
-							prinltn "Action" + action
-							prinltn "datacenter" + datacenter
+							println "application" + application
+							println "Action" + action
+							println "datacenter" + datacenter
 						}
 					}	
 				}
