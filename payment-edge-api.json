@@ -1,0 +1,37 @@
+{
+    "HAPROXY_SERVERS": [
+    "haproxy2-test.nce", 
+	"haproxy2-test.nce",
+	"haproxy1-test.ncw",
+	"haproxy2-test.ncw"
+	 ],
+    "APPNCESERVERS": [
+	"nceserver01",
+    "nceserver02",
+	"nceserver03"
+    ],
+    "APPNCWSERVERS": [
+	"ncwserver01",
+    "ncwserver01",
+	"ncwserver01"
+    ],	
+	"ADMINNCESERVERS": [
+	"nceserver01"
+    ],
+	"ADMINNCWSERVERS": [
+	"ncwserver01"
+    ],
+    "BACKEND": [
+        "www-test"
+    ],
+	"API":[
+		"payment-edge-api",
+		"gateway",
+		"eureka",
+		"config"
+	],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
