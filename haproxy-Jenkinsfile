@@ -70,7 +70,8 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application c3po"								
-								def serverdetails = readJSON file: 'Patching_cycle_07_10/c3po.json'
+								def serverdetails = readJSON file: 'c3po.json'
+								//def serverdetails = readJSON file: 'Patching_cycle_07_10/c3po.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.NCESERVERS
 								def ncwserver = serverdetails.NCWSERVERS
@@ -112,7 +113,8 @@ pipeline {
 					script{
 						try {
 							println "Performing "+ action +" on application core"	
-							def serverdetails = readJSON file: 'Patching_cycle_07_10/core.json'
+							def serverdetails = readJSON file: 'core.json'
+							//def serverdetails = readJSON file: 'Patching_cycle_07_10/core.json'
 							def haproxyservers = serverdetails.HAPROXY_SERVERS 
 							def nceserver = serverdetails.NCESERVERS
 							def ncwserver = serverdetails.NCWSERVERS
