@@ -75,23 +75,17 @@ pipeline {
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.NCESERVERS
 								def ncwserver = serverdetails.NCWSERVERS
-								def ncebackend = serverdetails.NCEBACKEND
-								def ncwbackend = serverdetails.NCWBACKEND
+								def backend = serverdetails.BACKEND
 								def sockfileloc = serverdetails.SOCKFILE
 								def server
-								def backend
 
 								if(datacenter =='NCE'){
 									 server = nceserver
-									 backend =ncebackend
 									 println "NCE server are: " + server
-									 println "NCE backend is: " + backend
 								}
 								else if(datacenter =='NCW'){
 									server = ncwserver
-									backend =ncwbackend
 									println "NCW server are: " + server
-									println "NCW backend is: " + backend
 								}
 								performaction(haproxyservers, backend, server, action, sockfileloc )				
 							}catch(Exception e) {
