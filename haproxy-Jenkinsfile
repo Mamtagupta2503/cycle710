@@ -181,3 +181,9 @@ def testperformaction(Object haproxyservers){
 		spaceName: 'MamtaKT']]  
 	}
 } */
+
+post {
+	always {
+		println publishresults
+	}
+}
