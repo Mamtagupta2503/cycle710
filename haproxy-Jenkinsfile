@@ -12,10 +12,13 @@ pipeline {
     stages {
 
 		stage('Parallel execution') {
-			prinltn "application" + application
-			prinltn "Action" + action
-			prinltn "datacenter" + datacenter
-			
+			steps {
+				script{
+					prinltn "application" + application
+					prinltn "Action" + action
+					prinltn "datacenter" + datacenter
+				}
+			}	
 			parallel {
 				stage('payment-edge-api') {
 					when {
