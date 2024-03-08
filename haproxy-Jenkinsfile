@@ -140,7 +140,7 @@ def performaction(Object haproxyservers, Object backend, Object server, String a
 				try{
 					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
 				}catch(Exception e) {
-					payment-edge-api ='Failed'
+					paymentedgeapi ='Failed'
 					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 						sh "exit 1"
 					}
