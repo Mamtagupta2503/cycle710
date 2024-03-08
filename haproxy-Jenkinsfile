@@ -161,7 +161,7 @@ def performaction(Object haproxyservers, Object backend, Object server, String a
 				echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
 				try{
 					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
-					def obj =sh "mkdir mamta5"
+					def obj =sh "ls -la"
 				}catch(Exception e) {
 					result ='Failure'	
 					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
