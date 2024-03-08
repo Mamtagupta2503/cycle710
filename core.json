@@ -12,7 +12,7 @@
     ],
     "NCWSERVERS": [
 	"recomm-eng1-core-ncw",
-  "recomm-eng2-prod-ncw"
+  "recomm-eng2-core-ncw"
     
     ],
     "BACKEND": [
