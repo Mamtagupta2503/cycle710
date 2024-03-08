@@ -5,15 +5,25 @@
 	"haproxy1-test.ncw",
 	"haproxy2-test.ncw"
 	 ],
-    "APPNCESERVERS": [
+	"APPNCESERVERS": [
 	"nceserver01",
     "nceserver02",
 	"nceserver03"
     ],
-    "APPNCWSERVERS": [
+"APPNCWSERVERS": [
 	"ncwserver01",
     "ncwserver01",
 	"ncwserver01"
+    ],
+    "NCE_SERVERS": [
+	"nceserver01",
+    "nceserver01",
+	"nceserver01"
+    ],	
+    "NCW_SERVERS": [
+	"ncwserver01",
+    "ncwserver02",
+	"ncwserver03"
     ],	
 	"ADMINNCESERVERS": [
 	"nceserver01"
