@@ -1,6 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
+def publishresults
 def paymentedgeapi ='Success'
 def core ='Success'
 def c3po ='Success'
@@ -50,7 +51,11 @@ pipeline {
 									server = ncwserver
 									println "NCW server are: " + server
 								}
-								performaction(haproxyservers, backend, server, action, sockfileloc )			
+								def result =performaction(haproxyservers, backend, server, action, sockfileloc )
+								
+								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+									
+									
 							/*}catch(Exception e) {
 								paymentedgeapi ='Failed'
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -87,7 +92,9 @@ pipeline {
 									server = ncwserver
 									println "NCW server are: " + server
 								}
-								performaction(haproxyservers, backend, server, action, sockfileloc )				
+								def result = performaction(haproxyservers, backend, server, action, sockfileloc )				
+								publishresults = publishresults + "c3po: " + result+ "\n"
+								
 							}catch(Exception e) {
 								c3po ='Failed'
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -124,7 +131,9 @@ pipeline {
 								server = ncwserver
 								println "NCW server are: " + server
 							}
-						performaction(haproxyservers, backend, server, action, sockfileloc )	
+							def result = performaction(haproxyservers, backend, server, action, sockfileloc )	
+							publishresults = publishresults + "core: " + result+ "\n"
+							
 						}catch(Exception e) {
 							core ='Failed'
 							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -139,6 +148,7 @@ pipeline {
 	}	 
 }
 def performaction(Object haproxyservers, Object backend, Object server, String action, Object sockfileloc ){
+	def result ='Success'
 	for(ha in haproxyservers) {
 		def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
 		for(bknd in backend) {
@@ -146,9 +156,9 @@ def performaction(Object haproxyservers, Object backend, Object server, String a
 				echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
 				try{
 					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
-					sh "mkdir mamta"
+					def obj =sh "mkdir mamta5"
 				}catch(Exception e) {
-					paymentedgeapi ='Failed'
+					result ='Failure'	
 					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 						sh "exit 1"
 					}
@@ -156,6 +166,7 @@ def performaction(Object haproxyservers, Object backend, Object server, String a
 			}
 		}
 	}
+	return result
 }
 def testperformaction(Object haproxyservers){
 	println haproxyservers
