@@ -16,7 +16,7 @@
     
     ],
     "BACKEND": [
-        "www-core_eng"
+        "www-c3po_eng"
     ],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
 	
