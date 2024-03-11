@@ -1,0 +1,130 @@
+def datacenter =params.DC
+def action =params.Action
+def application =params.Application
+def apifromparameter =params.api 
+def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Parallel execution') {
+            parallel {
+                stage('Application: payment-edge-api') {
+                    when {
+                        expression {
+                        'payment-edge-api' in application||'All' in application
+                        }
+                    }
+                    steps {
+                        script{
+                            try{
+                                println "Performing "+ action +" on application payment-edge-api"
+                                def serverdetails = readJSON file: 'Patching_cycle_07_10/payment-edge-api.json'
+								def serverdetails = readJSON file: 'payment-edge-api.json'
+                                def nceserver = serverdetails.NCESERVERS
+                                def ncwserver = serverdetails.NCWSERVERS
+								def nceadminserver = serverdetails.NCESERVERS
+                                def ncwadminserver = serverdetails.NCWSERVERS
+                                def appname = serverdetails.APP
+								def reverseapp = appname.reverse();
+								def server
+                         
+                                if(datacenter =='NCE'){
+                                    server = nceserver
+									adminserver = nceadminserver
+                                    println "nce servers are: " + server
+                                }
+                                else if(datacenter =='NCW'){
+                                    server = ncwserver
+									adminserver = ncwadminserver
+                                    println "ncw servers are: " + server
+                                }
+								if(action =='stop'){
+									for(app in appname) {
+										appstartstop(app, server,'stop')
+									}
+									appstartstop('services-server-admin', adminserver,'stop')
+									appstartstop('services-server-config', server,'stop')
+									kafkazookeepstartstop('kafka',server,'stop')
+									kafkazookeepstartstop('zookeeper',server,'stop')								
+								}
+
+                                else if(action =='start'){
+									kafkazookeepstartstop('zookeeper',server,'start')
+									kafkazookeepstartstop('kafka',server,'start')
+									appstartstop('services-server-config', server,'start'
+									appstartstop('services-server-admin', adminserver,'start')
+									for(app in reverseapp) {
+										appstartstop(app, server,'stop')
+									}
+								}
+								
+									
+								 
+							}catch(Exception e) 
+                            {
+                                println "******** ERROR ********"+e
+                                apiaemkafkaproducer ='Failed'
+                                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+								{
+                                    sh "exit 1"
+                                }
+                            }
+                        }
+                    }        
+                }    
+			}   
+		}        
+    }
+    /*post {
+		always {
+			sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+			message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n apiaemkafkaproducer: [${apiaemkafkaproducer}] \n Serviceability: [${Serviceability}] \n Smartsheet:[${Smartsheet}] \n PaymentUI: [${PaymentUI}] \n OOBServiceRouter: [${OOBServiceRouter}] \n SALIServicerouter: [${SALIServicerouter}] \n mobilehandofftoken: [${mobilehandofftoken}] \n llmtokengenerator: [${llmtokengenerator}] \n MobileTokenUI: [${MobileTokenUI}] ",
+			spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
+			spaceName: 'MamtaKT']]  
+		}
+
+	}*/
+}
+def kafkazookeepstartstop(String appname, Object Server, String action){
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "${action} on server ${s}" 
+		try{
+			echo "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}bin/app-${action}.sh'"  
+			//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}bin/app-${action}.sh'"
+		}catch(Exception e) 
+		{
+			println "******** ERROR ********"+e
+			apiaemkafkaproducer ='Failed'
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+			{
+				sh "exit 1"
+			}
+		}
+	}
+}
+def appstartstop(String appname, Object Server, String action){
+	def counter =0
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "${action} on server ${s}" 
+		sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		try{
+			
+			//sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
+			counter = counter +1
+		}catch(Exception e) 
+		{
+			println "******** ERROR ********"+e
+			counter = counter +1
+			apiaemkafkaproducer ='Failed'
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+			{
+				sh "exit 1"
+			}
+		}
+	}
+}		
