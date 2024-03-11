@@ -59,7 +59,7 @@ pipeline {
 									appstartstop('services-server-config', server,'start')
 									appstartstop('services-server-admin', adminserver,'start')
 									for(app in reverseapp) {
-										appstartstop(app, server,'stop')
+										appstartstop(app, server,'start')
 									}
 								}
 								
