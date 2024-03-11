@@ -96,20 +96,9 @@ def kafkazookeepstartstop(String appname, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		echo "${action} on server ${s} for app ${appname}" 
-		echo "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
-		try{
-			//sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
-			counter = counter +1
-		}catch(Exception e) 
-		{
-			println "******** ERROR ********"+e
-			counter = counter +1
-			paymentedgeapi ='Failed'
-			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-			{
-				sh "exit 1"
-			}
-		}
+		echo "print shell command $SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		//sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		counter = counter +1
 	}
 }
 def appstartstop(String appname, Object server, String action){
@@ -117,20 +106,7 @@ def appstartstop(String appname, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		echo "${action} on server ${s} for app ${appname}" 
-		echo "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'" 
-		try{
-			
-			//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'"
-			
-		}catch(Exception e) 
-		{
-			println "******** ERROR ********"+e
-			
-			paymentedgeapi ='Failed'
-			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-			{
-				sh "exit 1"
-			}
-		}
+		echo "print shell command $SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'" 
+		//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'"	
 	}
 }		
