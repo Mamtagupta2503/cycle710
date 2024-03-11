@@ -113,7 +113,7 @@ def appstartstop(String appname, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		echo "${action} on server ${s}" 
-		sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		echo "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
 		try{
 			
 			//sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
