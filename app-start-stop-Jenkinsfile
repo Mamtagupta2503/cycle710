@@ -38,13 +38,13 @@ pipeline {
                                     server = nceserver
 									adminserver = nceadminserver
                                     println "nce servers are: " + server
-									println "nce adminserver is: " + adminserver
+									println "nce adminserver : " + adminserver
                                 }
                                 else if(datacenter =='NCW'){
                                     server = ncwserver
 									adminserver = ncwadminserver
                                     println "ncw servers are: " + server
-									println "ncw adminserver is: " + adminserver
+									println "ncw adminserver : " + adminserver
                                 }
 								if(action =='status'){
 									for(app in appname) {
@@ -119,9 +119,9 @@ pipeline {
 									kzserver = kznceserver
 									configeurekaserver =nceconfigeurekaserver
                                     println "nce servers are: " + server
-									println "nce adminserver is: " + adminserver
+									println "nce adminserver : " + adminserver
 									println "nce kafka/zookeeper servers are: " + kznceserver
-									println "nce eureka config server is: " + nceconfigeurekaserver
+									println "nce eureka config server : " + nceconfigeurekaserver
                                 }
                                 else if(datacenter =='NCW'){
                                     server = ncwserver
@@ -129,9 +129,9 @@ pipeline {
 									kzserver =kzncwserver
 									configeurekaserver=ncwconfigeurekaserver
                                     println "ncw servers are: " + server
-									println "ncw adminserver is: " + adminserver
+									println "ncw adminserver : " + adminserver
 									println "ncw kafka/zookeeper servers are: " + kzncwserver
-									println "ncw eureka config server is: " + ncwconfigeurekaserver
+									println "ncw eureka config server : " + ncwconfigeurekaserver
                                 }
 								
 								if(action =='status'){
@@ -271,6 +271,6 @@ def startstopcore(String home_folder, Object server,String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		echo "print shell command $SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
-		//sh "$SSH_OPTION sudo su - core_user -c '$HOME_FOLDER/bin/app-${action}.sh'"	
+		//sh "$SSH_OPTION sudo su - core_user -c '$HOME_FOLDER/app-${action}.sh'"	
 	}
 }	
