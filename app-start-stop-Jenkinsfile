@@ -205,22 +205,19 @@ pipeline {
                                     println "ncw servers are: " + server
 								}
 								if(action =='status'){
-									for(app in appname) {
-										startstopcore(app, server,'status')
-									}
+									
+									startstopcore(homefolder, server,'status')
 									startstopelasticsearch(server,'status')		
 								}
-								if(action =='stop'){
-									for(app in appname) {
-										startstopcore(homefolder,server,'stop')
-										startstopelasticsearch(server,'stop') //need too add code and input param
-									}
+								else if(action =='stop'){
+									
+									startstopcore(homefolder,server,'stop')
+									startstopelasticsearch(server,'stop') //need too add code and input param
+									
 								}
                                 else if(action =='start'){
-									startstopelasticsearch('start') //need too add code and input param
-									for(app in reverseapp) {
-										startstopelasticsearch(server,'start')
-									}
+									startstopcore(homefolder,server,'start')
+									startstopelasticsearch(server,'start') //need too add code and input param
 								}
 							}catch(Exception e) 
                             {
