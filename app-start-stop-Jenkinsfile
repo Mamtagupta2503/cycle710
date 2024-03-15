@@ -192,8 +192,6 @@ pipeline {
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
 								def homefolder = serverdetails.DIRECTORY
-                                def appname = serverdetails.APP
-								def reverseapp = appname.reverse();
 								def server
                          
                                 if(datacenter =='NCE'){
