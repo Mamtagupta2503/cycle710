@@ -191,7 +191,7 @@ pipeline {
 								def serverdetails = readJSON file: 'core.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
-								def homefolder = serverdetails.=DIRECTORY
+								def homefolder = serverdetails.DIRECTORY
                                 def appname = serverdetails.APP
 								def reverseapp = appname.reverse();
 								def server
