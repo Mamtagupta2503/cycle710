@@ -87,7 +87,7 @@
     "BACKEND": [
         "www-c3po"
     ],
-	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"
 	
 
 }
