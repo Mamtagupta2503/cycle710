@@ -1,22 +1,93 @@
 {
     "HAPROXY_SERVERS": [
-    "haproxy1-c3po.nce",
-    "haproxy1-c3po.ncw"
+		 "vm0pnoobsxa0031", 
+		 "vm0pnoobsxa0031"
+	 ],
+    "HA_NCESERVERS": [
+		"c3potest_vm19",
+		"c3potest_vm20",
+		"c3potest_vm21",
+		"c3potest_vm27",
+		"c3potest_vm28",
+		"c3potest_vm04",
+		"c3potest_vm36",
+		"c3potest_vm02"
     ],
-    "NCESERVERS": [
-   "recomm-eng1-c3po-nce",
-    "recomm-eng2-c3po-nce"
+    "HA_NCWSERVERS": [
+		"c3potest_vm33",
+		"c3potest_vm34",
+		"c3potest_vm35",
+		"c3potest_vm42",
+		"c3potest_vm41",
+		"c3potest_vmmoa34",
+		"c3potest_vm44",
+		"c3potest_vm03"
     ],
-    "NCWSERVERS": [
-	"recomm-eng1-c3po-ncw",
-  "recomm-eng2-c3po-ncw"
-    
+	"APPNCESERVERS": [
+		"test.27",
+		"test.30",
+		"test.29",
+		"test.44",
+		"test.210",
+		"test.137",
+		"test.53",
+		"test.47"
     ],
+    "APPNCWSERVERS": [
+		"test.14",
+		"test.18",
+		"test.24",
+		"test.19",
+		"test.159",
+		"test.90",
+		"test.22",
+		"test.53"
+	],	
+	
+	"KAFKA_ZK_NCESERVERS": [
+		"test.27",
+		"test.30",
+		"test.29",
+		"test.44",
+		"test.210",
+		"test.137",
+		"test.53",
+		"test.47"
+    ],
+    "KAFKA_ZK_NCWSERVERS": [
+		"test.14",
+		"test.18",
+		"test.24",
+		"test.19",
+		"test.159",
+		"test.90",
+		"test.22",
+		"test.53"
+    ],
+	"ADMINNCESERVERS": [
+		"test.210"
+	]
+	"ADMINNCWSERVERS": [
+		"test.159"
+	]
+	"CONFIG_EUREKA_NCESERVERS": [
+		"test.29",
+		"test.44",
+		"test.210"
+	]
+	"CONFIG_EUREKA_NCWSERVERS": [
+		"test.24",
+		"test.19",
+		"test.159"
+	]
+	"APP":[
+		"c3po",
+		"services-server-gateway"
+	],
     "BACKEND": [
-        "www-c3po_eng"
+        "www-c3po"
     ],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
 	
-	"DIRECTORY": "/data/apps/css-core/corerec/bin"
 
 }
