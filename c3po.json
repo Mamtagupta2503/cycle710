@@ -66,20 +66,20 @@
     ],
 	"ADMINNCESERVERS": [
 		"test.210"
-	]
+	],
 	"ADMINNCWSERVERS": [
 		"test.159"
-	]
+	],
 	"CONFIG_EUREKA_NCESERVERS": [
 		"test.29",
 		"test.44",
 		"test.210"
-	]
+	],
 	"CONFIG_EUREKA_NCWSERVERS": [
 		"test.24",
 		"test.19",
 		"test.159"
-	]
+	],
 	"APP":[
 		"c3po",
 		"services-server-gateway"
@@ -88,6 +88,4 @@
         "www-c3po"
     ],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"
-	
-
 }
