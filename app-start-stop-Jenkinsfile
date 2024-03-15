@@ -120,8 +120,8 @@ pipeline {
 									configeurekaserver =nceconfigeurekaserver
                                     println "nce servers are: " + server
 									println "nce adminserver is: " + adminserver
-									println "ncw kafka/zookeeper servers are: " + kzncwserver
-									println "ncw eureka config server is: " + ncwconfigeurekaserver
+									println "nce kafka/zookeeper servers are: " + kznceserver
+									println "nce eureka config server is: " + nceconfigeurekaserver
                                 }
                                 else if(datacenter =='NCW'){
                                     server = ncwserver
@@ -138,29 +138,29 @@ pipeline {
 									for(app in appname) {
 										appstartstop(app, server,'status')
 									}						
-									appstartstop('services-server-eureka', adminserver,'stop')
+									appstartstop('services-server-eureka', ncwconfigeurekaserver,'stop')
 									appstartstop('services-server-admin', adminserver,'status')
-									appstartstop('services-server-config', server,'status')
-									kafkazookeepstartstop('kafka',server,'status')
-									kafkazookeepstartstop('zookeeper',server,'status')								
+									appstartstop('services-server-config', ncwconfigeurekaserver,'status')
+									kafkazookeepstartstop('kafka',kzserver,'status')
+									kafkazookeepstartstop('zookeeper',kzserver,'status')								
 								}
 								if(action =='stop'){
 									for(app in appname) {
 										appstartstop(app, server,'stop') //stopping both c3po and gateway in 1 go
 									}
-									appstartstop('services-server-eureka', adminserver,'stop')
+									appstartstop('services-server-eureka', ncwconfigeurekaserver,'stop')
 									appstartstop('services-server-admin', adminserver,'stop')
-									appstartstop('services-server-config', server,'stop')
-									kafkazookeepstartstop('kafka',server,'stop')
-									kafkazookeepstartstop('zookeeper',server,'stop')								
+									appstartstop('services-server-config', ncwconfigeurekaserver,'stop')
+									kafkazookeepstartstop('kafka',kzserver,'stop')
+									kafkazookeepstartstop('zookeeper',kzserver,'stop')									
 								}
 
                                 else if(action =='start'){
-									kafkazookeepstartstop('zookeeper',server,'start')
-									kafkazookeepstartstop('kafka',server,'start')
-									appstartstop('services-server-config', server,'start')
+									kafkazookeepstartstop('zookeeper',kzserver,'start')
+									kafkazookeepstartstop('kafka',kzserver,'start')
+									appstartstop('services-server-config', ncwconfigeurekaserver,'start')
 									appstartstop('services-server-admin', adminserver,'start')
-									appstartstop('services-server-eureka', adminserver,'start')
+									appstartstop('services-server-eureka', ncwconfigeurekaserver,'start')
 									for(app in reverseapp) {
 										appstartstop(app, server,'start')
 									}
