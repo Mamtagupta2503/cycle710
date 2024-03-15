@@ -1,0 +1,281 @@
+def datacenter =params.DC
+def action =params.Action
+def application =params.Application
+def apifromparameter =params.api 
+def paymentedgeapi=''
+def core=''
+def c3po=''
+def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Parallel execution') {
+            parallel {
+                stage('Application: payment-edge-api') {
+                    when {
+                        expression {
+                        'payment-edge-api' in application||'All' in application
+                        }
+                    }
+                    steps {
+                        script{
+                            try{
+                                println "Performing "+ action +" on application payment-edge-api"
+                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/payment-edge-api.json'
+								def serverdetails = readJSON file: 'payment-edge-api.json'
+                                def nceserver = serverdetails.NCESERVERS
+                                def ncwserver = serverdetails.NCWSERVERS
+								def nceadminserver = serverdetails.ADMINNCESERVERS
+                                def ncwadminserver = serverdetails.ADMINNCWSERVERS
+                                def appname = serverdetails.APP
+								def reverseapp = appname.reverse();
+								def server
+                         
+                                if(datacenter =='NCE'){
+                                    server = nceserver
+									adminserver = nceadminserver
+                                    println "nce servers are: " + server
+									println "nce adminserver is: " + adminserver
+                                }
+                                else if(datacenter =='NCW'){
+                                    server = ncwserver
+									adminserver = ncwadminserver
+                                    println "ncw servers are: " + server
+									println "ncw adminserver is: " + adminserver
+                                }
+								if(action =='status'){
+									for(app in appname) {
+										appstartstop(app, server,'status')
+									}
+								appstartstop('services-server-admin', adminserver,'status')
+								appstartstop('services-server-config', server,'status')
+								kafkazookeepstartstop('kafka',server,'status')
+								kafkazookeepstartstop('zookeeper',server,'status')								
+								}
+								if(action =='stop'){
+									for(app in appname) {
+										appstartstop(app, server,'stop')
+									}
+									appstartstop('services-server-admin', adminserver,'stop')
+									appstartstop('services-server-config', server,'stop')
+									kafkazookeepstartstop('kafka',server,'stop')
+									kafkazookeepstartstop('zookeeper',server,'stop')								
+								}
+
+                                else if(action =='start'){
+									kafkazookeepstartstop('zookeeper',server,'start')
+									kafkazookeepstartstop('kafka',server,'start')
+									appstartstop('services-server-config', server,'start')
+									appstartstop('services-server-admin', adminserver,'start')
+									for(app in reverseapp) {
+										appstartstop(app, server,'start')
+									}
+								}
+							}catch(Exception e) 
+                            {
+                                println "******** ERROR ********"+e
+                                paymentedgeapi ='Failed'
+                                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+								{
+                                    sh "exit 1"
+                                }
+                            }
+                        }
+                    }        
+                }
+				stage('Application: c3po') {
+                    when {
+                        expression {
+                        'c3po' in application||'All' in application
+                        }
+                    }
+                    steps {
+                        script{
+                            try{
+                                println "Performing "+ action +" on application c3po"
+                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/c3po.json'
+								def serverdetails = readJSON file: 'c3po.json'
+                                def nceserver = serverdetails.APPNCESERVERS
+                                def ncwserver = serverdetails.APPNCWSERVERS
+								def kznceserver= serverdetails.KAFKA_ZK_NCESERVERS
+								def kzncwserver= serverdetails.KAFKA_ZK_NCWSERVERS
+								def nceadminserver = serverdetails.ADMINNCESERVERS
+                                def ncwadminserver = serverdetails.ADMINNCWSERVERS
+								def nceconfigeurekaserver = serverdetails.CONFIG_EUREKA_NCESERVERS
+								def ncwconfigeurekaserver = serverdetails.CONFIG_EUREKA_NCWSERVERS
+                                def appname = serverdetails.APP
+								def reverseapp = appname.reverse();
+								def server
+								def adminserver
+								def kzserver
+								def configeurekaserver
+                         
+                                if(datacenter =='NCE'){
+                                    server = nceserver
+									adminserver = nceadminserver
+									kzserver = kznceserver
+									configeurekaserver =nceconfigeurekaserver
+                                    println "nce servers are: " + server
+									println "nce adminserver is: " + adminserver
+									println "ncw kafka/zookeeper servers are: " + kzncwserver
+									println "ncw eureka config server is: " + ncwconfigeurekaserver
+                                }
+                                else if(datacenter =='NCW'){
+                                    server = ncwserver
+									adminserver = ncwadminserver
+									kzserver =kzncwserver
+									configeurekaserver=ncwconfigeurekaserver
+                                    println "ncw servers are: " + server
+									println "ncw adminserver is: " + adminserver
+									println "ncw kafka/zookeeper servers are: " + kzncwserver
+									println "ncw eureka config server is: " + ncwconfigeurekaserver
+                                }
+								
+								if(action =='status'){
+									for(app in appname) {
+										appstartstop(app, server,'status')
+									}						
+									appstartstop('services-server-eureka', adminserver,'stop')
+									appstartstop('services-server-admin', adminserver,'status')
+									appstartstop('services-server-config', server,'status')
+									kafkazookeepstartstop('kafka',server,'status')
+									kafkazookeepstartstop('zookeeper',server,'status')								
+								}
+								if(action =='stop'){
+									for(app in appname) {
+										appstartstop(app, server,'stop') //stopping both c3po and gateway in 1 go
+									}
+									appstartstop('services-server-eureka', adminserver,'stop')
+									appstartstop('services-server-admin', adminserver,'stop')
+									appstartstop('services-server-config', server,'stop')
+									kafkazookeepstartstop('kafka',server,'stop')
+									kafkazookeepstartstop('zookeeper',server,'stop')								
+								}
+
+                                else if(action =='start'){
+									kafkazookeepstartstop('zookeeper',server,'start')
+									kafkazookeepstartstop('kafka',server,'start')
+									appstartstop('services-server-config', server,'start')
+									appstartstop('services-server-admin', adminserver,'start')
+									appstartstop('services-server-eureka', adminserver,'start')
+									for(app in reverseapp) {
+										appstartstop(app, server,'start')
+									}
+								}
+							}catch(Exception e) 
+                            {
+                                println "******** ERROR ********"+e
+                                c3po ='Failed'
+                                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+								{
+                                    sh "exit 1"
+                                }
+                            }
+                        }
+                    }        
+                }
+				stage('Application: core') {
+                    when {
+                        expression {
+                        'core' in application||'All' in application
+                        }
+                    }
+                    steps {
+                        script{
+                            try{
+                                println "Performing "+ action +" on application core"
+                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/core.json'
+								def serverdetails = readJSON file: 'core.json'
+                                def nceserver = serverdetails.NCESERVERS
+                                def ncwserver = serverdetails.NCWSERVERS
+								def homefolder = serverdetails.=DIRECTORY
+                                def appname = serverdetails.APP
+								def reverseapp = appname.reverse();
+								def server
+                         
+                                if(datacenter =='NCE'){
+                                    server = nceserver
+                                    println "nce servers are: " + server
+                                }
+                                else if(datacenter =='NCW'){
+                                    server = ncwserver
+                                    println "ncw servers are: " + server
+								}
+								if(action =='status'){
+									for(app in appname) {
+										startstopcore(app, server,'status')
+									}
+									startstopelasticsearch(server,'status')		
+								}
+								if(action =='stop'){
+									for(app in appname) {
+										startstopcore(homefolder,server,'stop')
+										startstopelasticsearch(server,'stop') //need too add code and input param
+									}
+								}
+                                else if(action =='start'){
+									startstopelasticsearch('start') //need too add code and input param
+									for(app in reverseapp) {
+										startstopelasticsearch(server,'start')
+									}
+								}
+							}catch(Exception e) 
+                            {
+                                println "******** ERROR ********"+e
+                                core ='Failed'
+                                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+								{
+                                    sh "exit 1"
+                                }
+                            }
+                        }
+                    }        
+                }				
+			}   
+		}        
+    }
+    /*post {
+		always {
+			sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+			message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n paymentedgeapi: [${paymentedgeapi}] \n core: [${core}] \n c3po:[${c3po}]",
+			spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
+			spaceName: 'MamtaKT']]  
+		}
+
+	}*/
+}
+def kafkazookeepstartstop(String appname, Object server, String action){
+	def counter =0
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "${action} on server ${s} for app ${appname}" 
+		echo "print shell command $SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		//sh "$SSH_OPTION sudo service ${appname}-${counter} ${action}"
+		counter = counter +1
+	}
+}
+def appstartstop(String appname, Object server, String action){
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "${action} on server ${s} for app ${appname}" 
+		echo "print shell command $SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'" 
+		//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appname}/bin/app-${action}.sh'"	
+	}
+}
+def startstopelasticsearch(Object server,String action){
+	for(s in server) {
+		SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "println command: sudo systemctl ${action} elasticsearch.service"
+		//sh "$SSH_OPTION sudo systemctl ${action} elasticsearch.service"
+	}
+}
+def startstopcore(String home_folder, Object server,String action){
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		echo "print shell command $SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
+		//sh "$SSH_OPTION sudo su - core_user -c '$HOME_FOLDER/bin/app-${action}.sh'"	
+	}
+}	
