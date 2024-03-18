@@ -79,13 +79,13 @@ pipeline {
 								if(apifromparameter =='services-server-config' || apifromparameter =='payment-edge-api'||apifromparameter=='services-server-gateway'||apifromparameter=='services-server-eureka'){
 								  echo 'api selected from input'
 								  echo apifromparameter
-								  appstartstop(app, server,action)
+								  appstartstop(apifromparameter, server,action)
 								
 								}
 								else if(apifromparameter =='services-server-admin'){
 								 echo 'api selected from input'
 								  echo apifromparameter
-								  appstartstop(app, adminserver,action)
+								  appstartstop(apifromparameter, adminserver,action)
 								}
 								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
 								 echo 'api selected from input'
