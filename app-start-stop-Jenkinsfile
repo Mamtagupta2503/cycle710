@@ -237,18 +237,18 @@ pipeline {
                                     server = ncwserver
                                     println "ncw servers are: " + server
 								}
-								if(action =='status'){
+								if(action =='status' && application =='All'){
 									
 									startstopcore(homefolder, server,'status')
 									startstopelasticsearch(server,'status')		
 								}
-								else if(action =='stop'){
+								else if(action =='stop' && application =='All'){
 									
 									startstopcore(homefolder,server,'stop')
 									startstopelasticsearch(server,'stop') //need too add code and input param
 									
 								}
-                                else if(action =='start'){
+                                else if(action =='start' && application =='All'){
 									startstopcore(homefolder,server,'start')
 									startstopelasticsearch(server,'start') //need too add code and input param
 								}
