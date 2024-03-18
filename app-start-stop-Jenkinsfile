@@ -151,13 +151,31 @@ pipeline {
 									println "ncw eureka config server : " + ncwconfigeurekaserver
                                 }
 								
+								if(apifromparameter =='c3po' || apifromparameter=='services-server-gateway'){
+									println 'app selected from input parameter: ' + apifromparameter
+									appstartstop(apifromparameter, server,action)
+								
+								}
+								else if(apifromparameter =='services-server-admin'){
+									println 'app selected from input parameter: ' + apifromparameter
+									appstartstop(apifromparameter, adminserver,action)
+								}
+								else if(apifromparameter =='services-server-config'|| apifromparameter=='services-server-eureka'){
+									println 'app selected from input parameter: ' + apifromparameter
+									appstartstop(apifromparameter, configeurekaserver,action)
+								}
+								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
+									println 'app selected from input parameter: ' + apifromparameter
+									kafkazookeepstartstop(apifromparameter,kzserver,action)
+								  
+								}
 								if(action =='status'){
 									for(app in appname) {
 										appstartstop(app, server,'status')
 									}						
-									appstartstop('services-server-eureka', ncwconfigeurekaserver,'stop')
+									appstartstop('services-server-eureka', configeurekaserver,'stop')
 									appstartstop('services-server-admin', adminserver,'status')
-									appstartstop('services-server-config', ncwconfigeurekaserver,'status')
+									appstartstop('services-server-config', configeurekaserver,'status')
 									kafkazookeepstartstop('kafka',kzserver,'status')
 									kafkazookeepstartstop('zookeeper',kzserver,'status')								
 								}
@@ -165,9 +183,9 @@ pipeline {
 									for(app in appname) {
 										appstartstop(app, server,'stop') //stopping both c3po and gateway in 1 go
 									}
-									appstartstop('services-server-eureka', ncwconfigeurekaserver,'stop')
+									appstartstop('services-server-eureka', configeurekaserver,'stop')
 									appstartstop('services-server-admin', adminserver,'stop')
-									appstartstop('services-server-config', ncwconfigeurekaserver,'stop')
+									appstartstop('services-server-config', configeurekaserver,'stop')
 									kafkazookeepstartstop('kafka',kzserver,'stop')
 									kafkazookeepstartstop('zookeeper',kzserver,'stop')									
 								}
@@ -175,9 +193,9 @@ pipeline {
                                 else if(action =='start'){
 									kafkazookeepstartstop('zookeeper',kzserver,'start')
 									kafkazookeepstartstop('kafka',kzserver,'start')
-									appstartstop('services-server-config', ncwconfigeurekaserver,'start')
+									appstartstop('services-server-config', configeurekaserver,'start')
 									appstartstop('services-server-admin', adminserver,'start')
-									appstartstop('services-server-eureka', ncwconfigeurekaserver,'start')
+									appstartstop('services-server-eureka', configeurekaserver,'start')
 									for(app in reverseapp) {
 										appstartstop(app, server,'start')
 									}
@@ -233,6 +251,15 @@ pipeline {
                                 else if(action =='start'){
 									startstopcore(homefolder,server,'start')
 									startstopelasticsearch(server,'start') //need too add code and input param
+								}
+								if(apifromparameter =='core'){
+									println 'app selected from input parameter: ' + apifromparameter
+									startstopcore(homefolder,server,action)
+								
+								}
+								else if(apifromparameter =='elasticsearch'){
+									println 'app selected from input parameter: ' + apifromparameter
+									startstopelasticsearch(server,action) //need too add code and input param
 								}
 							}catch(Exception e) 
                             {
