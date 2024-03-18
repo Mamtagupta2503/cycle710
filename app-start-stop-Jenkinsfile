@@ -169,7 +169,7 @@ pipeline {
 									kafkazookeepstartstop(apifromparameter,kzserver,action)
 								  
 								}
-								if(action =='status'){
+								if(action =='status' && application =='All'){
 									for(app in appname) {
 										appstartstop(app, server,'status')
 									}						
@@ -179,7 +179,7 @@ pipeline {
 									kafkazookeepstartstop('kafka',kzserver,'status')
 									kafkazookeepstartstop('zookeeper',kzserver,'status')								
 								}
-								if(action =='stop'){
+								if(action =='stop' && application =='All'){
 									for(app in appname) {
 										appstartstop(app, server,'stop') //stopping both c3po and gateway in 1 go
 									}
@@ -190,7 +190,7 @@ pipeline {
 									kafkazookeepstartstop('zookeeper',kzserver,'stop')									
 								}
 
-                                else if(action =='start'){
+                                else if(action =='start' && application =='All'){
 									kafkazookeepstartstop('zookeeper',kzserver,'start')
 									kafkazookeepstartstop('kafka',kzserver,'start')
 									appstartstop('services-server-config', configeurekaserver,'start')
