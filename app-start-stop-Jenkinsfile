@@ -76,7 +76,7 @@ pipeline {
 										appstartstop(app, server,'start')
 									}
 								}
-								if(application =='payment-edge-api' && (apifromparameter =='services-server-config' || apifromparameter =='services-server-config' || apifromparameter =='payment-edge-api'||apifromparameter=='ervices-server-gateway'||apifromparameter=='services-server-eureka')){
+								if(application =='payment-edge-api'){
 								  echo 'api selected from input'
 								  echo apifromparameter
 								
