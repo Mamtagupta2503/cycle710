@@ -30,9 +30,11 @@ pipeline {
                                 def ncwserver = serverdetails.NCWSERVERS
 								def nceadminserver = serverdetails.ADMINNCESERVERS
                                 def ncwadminserver = serverdetails.ADMINNCWSERVERS
+								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
                                 def appname = serverdetails.APP
 								def reverseapp = appname.reverse();
 								def server
+								def app
                          
                                 if(datacenter =='NCE'){
                                     server = nceserver
@@ -46,7 +48,7 @@ pipeline {
                                     println "ncw servers are: " + server
 									println "ncw adminserver : " + adminserver
                                 }
-								if(action =='status'){
+								if(action =='status' && application ='All' ){
 									for(app in appname) {
 										appstartstop(app, server,'status')
 									}
@@ -55,7 +57,7 @@ pipeline {
 								kafkazookeepstartstop('kafka',server,'status')
 								kafkazookeepstartstop('zookeeper',server,'status')								
 								}
-								if(action =='stop'){
+								if(action =='stop' && application ='All'){
 									for(app in appname) {
 										appstartstop(app, server,'stop')
 									}
@@ -65,7 +67,7 @@ pipeline {
 									kafkazookeepstartstop('zookeeper',server,'stop')								
 								}
 
-                                else if(action =='start'){
+                                else if(action =='start' && application ='All'){
 									kafkazookeepstartstop('zookeeper',server,'start')
 									kafkazookeepstartstop('kafka',server,'start')
 									appstartstop('services-server-config', server,'start')
