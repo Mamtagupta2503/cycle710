@@ -25,58 +25,58 @@ pipeline {
                             try{
                                 println "Performing "+ action +" on application payment-edge-api"
                                 //def serverdetails = readJSON file: 'Patching_cycle_07_10/payment-edge-api.json'
-								def serverdetails = readJSON file: 'payment-edge-api.json'
+				def serverdetails = readJSON file: 'payment-edge-api.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
-								def nceadminserver = serverdetails.ADMINNCESERVERS
+				def nceadminserver = serverdetails.ADMINNCESERVERS
                                 def ncwadminserver = serverdetails.ADMINNCWSERVERS
-								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+				def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
                                 def appname = serverdetails.APP
-								def reverseapp = appname.reverse();
-								def server
-								def app
+				def reverseapp = appname.reverse();
+				def server
+				def app
                          
                                 if(datacenter =='NCE'){
                                     server = nceserver
-									adminserver = nceadminserver
+				    adminserver = nceadminserver
                                     println "nce servers are: " + server
-									println "nce adminserver : " + adminserver
+				    println "nce adminserver : " + adminserver
                                 }
                                 else if(datacenter =='NCW'){
                                     server = ncwserver
-									adminserver = ncwadminserver
+				    adminserver = ncwadminserver
                                     println "ncw servers are: " + server
-									println "ncw adminserver : " + adminserver
+				    println "ncw adminserver : " + adminserver
                                 }
-								if(action =='status' && application ='All' ){
-									for(app in appname) {
-										appstartstop(app, server,'status')
-									}
-								appstartstop('services-server-admin', adminserver,'status')
-								appstartstop('services-server-config', server,'status')
-								kafkazookeepstartstop('kafka',server,'status')
-								kafkazookeepstartstop('zookeeper',server,'status')								
-								}
-								if(action =='stop' && application ='All'){
-									for(app in appname) {
-										appstartstop(app, server,'stop')
-									}
-									appstartstop('services-server-admin', adminserver,'stop')
-									appstartstop('services-server-config', server,'stop')
-									kafkazookeepstartstop('kafka',server,'stop')
-									kafkazookeepstartstop('zookeeper',server,'stop')								
-								}
+				if(action =='status' && application =='All' ){
+				for(app in appname) {
+				appstartstop(app, server,'status')
+				}
+				appstartstop('services-server-admin', adminserver,'status')
+				appstartstop('services-server-config', server,'status')
+				kafkazookeepstartstop('kafka',server,'status')
+				kafkazookeepstartstop('zookeeper',server,'status')								
+				}
+				if(action =='stop' && application =='All'){
+				for(app in appname) {
+				    appstartstop(app, server,'stop')
+				}
+					appstartstop('services-server-admin', adminserver,'stop')
+					appstartstop('services-server-config', server,'stop')
+					kafkazookeepstartstop('kafka',server,'stop')
+					kafkazookeepstartstop('zookeeper',server,'stop')								
+				}
 
-                                else if(action =='start' && application ='All'){
-									kafkazookeepstartstop('zookeeper',server,'start')
-									kafkazookeepstartstop('kafka',server,'start')
-									appstartstop('services-server-config', server,'start')
-									appstartstop('services-server-admin', adminserver,'start')
-									for(app in reverseapp) {
-										appstartstop(app, server,'start')
-									}
-								}
-							}catch(Exception e) 
+                                else if(action =='start' && application =='All'){
+					kafkazookeepstartstop('zookeeper',server,'start')
+					kafkazookeepstartstop('kafka',server,'start')
+					appstartstop('services-server-config', server,'start')
+					appstartstop('services-server-admin', adminserver,'start')
+					for(app in reverseapp) {
+						appstartstop(app, server,'start')
+					}
+				}
+				}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
                                 paymentedgeapi ='Failed'
