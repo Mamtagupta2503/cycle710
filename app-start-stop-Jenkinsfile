@@ -34,7 +34,7 @@ pipeline {
                                 def appname = serverdetails.APP
 				def reverseapp = appname.reverse();
 				def server
-				def app
+				//def app
                          
                                 if(datacenter =='NCE'){
                                     server = nceserver
