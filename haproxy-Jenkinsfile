@@ -1,6 +1,9 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
+def haproxyFromParam= params.haproxy
+def backendFromParam =params.backend
+def backendServersFromParam = params.backend_server
 def publishResults=''
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
@@ -37,17 +40,26 @@ pipeline {
 								def ncwserver = serverDetails.HA_NCW_SERVERS
 								def backend = serverDetails.BACKEND
 								def sockFileLoc = serverDetails.SOCKFILE
+								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
+								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def server
 								
-			
-								if(datacenter =='NCE'){
-									 server = nceserver
-									 println "NCE server are: " + server
+								if(application =='ALL') {
+									if(datacenter =='NCE'){
+										 server = nceserver
+										 println "NCE server are: " + server
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										println "NCW server are: " + server
+									}
+								}	
+								else 
+								{	
+									server = backendServersFromParamArray
+									haproxyservers = haproxyFromParamArray
 								}
-								else if(datacenter =='NCW'){
-									server = ncwserver
-									println "NCW server are: " + server
-								}
+								
 								def result =performAction(HAProxyServers, backend, server, action, sockFileLoc )
 								
 								publishResults = publishResults + "payment-edge-api: " + result+ "\n"
@@ -71,7 +83,7 @@ pipeline {
 					}
 					steps {
 						script{
-							//try {
+							try {
 								println "Performing "+ action +" on application c3po"								
 								//def serverDetails = readJSON file: 'c3po.json'
 								def serverDetails = readJSON file: 'c3po.json'
@@ -80,26 +92,35 @@ pipeline {
 								def ncwserver = serverDetails.HA_NCW_SERVERS
 								def backend = serverDetails.BACKEND
 								def sockFileLoc = serverDetails.SOCKFILE
+								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
+								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def server
 
-								if(datacenter =='NCE'){
-									 server = nceserver
-									 println "NCE server are: " + server
-								}
-								else if(datacenter =='NCW'){
-									server = ncwserver
-									println "NCW server are: " + server
+								if(application =='ALL') {
+									if(datacenter =='NCE'){
+										 server = nceserver
+										 println "NCE server are: " + server
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										println "NCW server are: " + server
+									}
+								}	
+								else 
+								{	
+									server = backendServersFromParamArray
+									haproxyservers = haproxyFromParamArray
 								}
 								def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )				
 								publishResults = publishResults + "c3po: " + result+ "\n"
 								
-							/*}catch(Exception e) {
+							}catch(Exception e) {
 								result ='Failed'
 								publishResults = publishResults + "c3po: " + result+ "\n"
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
-							} */
+							}
 						}
 					}      
 				}
@@ -120,16 +141,26 @@ pipeline {
 							def ncwserver = serverDetails.NCW_SERVERS
 							def backend = serverDetails.BACKEND
 							def sockFileLoc = serverDetails.SOCKFILE
+							def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
+							def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 							def server
 
-							if(datacenter =='NCE'){
-								server = nceserver
-								println "NCE server are: " + server
+							if(application =='ALL') {
+								if(datacenter =='NCE'){
+									server = nceserver
+									println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
 							}
-							else if(datacenter =='NCW'){
-								server = ncwserver
-								println "NCW server are: " + server
+							else 
+							{	
+								server = backendServersFromParamArray
+								haproxyservers = haproxyFromParamArray
 							}
+							
 							def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )	
 							publishResults = publishResults + "core: " + result+ "\n"
 							
