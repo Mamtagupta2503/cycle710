@@ -68,20 +68,20 @@
     ],
 	"ADMIN_NCE_SERVERS": [
 		"22.240.0.210"
-	]
+	],
 	"ADMIN_NCW_SERVERS": [
 		"22.242.0.159"
-	]
+	],
 	"CONFIG_EUREKA_NCE_SERVERS": [
 		"22.240.0.29",
 		"22.240.0.44",
 		"22.240.0.210"
-	]
+	],
 	"CONFIG_EUREKA_NCW_SERVERS": [
 		"22.242.0.24",
 		"22.242.0.19",
 		"22.242.0.159"
-	]
+	],
 	"APP":[
 		"c3po",
 		"services-server-gateway"
