@@ -57,7 +57,10 @@ pipeline {
 								else 
 								{	
 									server = backendServersFromParamArray
-									haproxyservers = haproxyFromParamArray
+									HAProxyServers = haproxyFromParamArray
+									println "HAProxyServers server from parameter: " + haproxyFromParamArray
+									println "backendServersFromParam from parameter: " + server
+									
 								}
 								
 								def result =performAction(HAProxyServers, backend, server, action, sockFileLoc )
@@ -109,7 +112,9 @@ pipeline {
 								else 
 								{	
 									server = backendServersFromParamArray
-									haproxyservers = haproxyFromParamArray
+									HAProxyServers = haproxyFromParamArray
+									println "HAProxyServers server from parameter: " + haproxyFromParamArray
+									println "backendServersFromParam from parameter: " + server
 								}
 								def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )				
 								publishResults = publishResults + "c3po: " + result+ "\n"
@@ -158,7 +163,9 @@ pipeline {
 							else 
 							{	
 								server = backendServersFromParamArray
-								haproxyservers = haproxyFromParamArray
+								HAProxyServers = haproxyFromParamArray
+								println "HAProxyServers server from parameter: " + haproxyFromParamArray
+								println "backendServersFromParam from parameter: " + server
 							}
 							
 							def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )	
