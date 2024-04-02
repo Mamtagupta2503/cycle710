@@ -1,7 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
-def publishresults=''
+def publishResults=''
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 pipeline {
@@ -30,13 +30,13 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application payment-edge-api"								
-								def serverdetails = readJSON file: 'payment-edge-api_test.json'
-								//def serverdetails = readJSON file: 'payment-edge-api.json'
-								def haproxyservers = serverdetails.HAPROXY_SERVERS 
-								def nceserver = serverdetails.HANCESERVERS
-								def ncwserver = serverdetails.HANCWSERVERS
-								def backend = serverdetails.BACKEND
-								def sockfileloc = serverdetails.SOCKFILE
+								def serverDetails = readJSON file: 'payment-edge-api.json'
+								//def serverDetails = readJSON file: 'payment-edge-api.json'
+								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
+								def nceserver = serverDetails.HA_NCE_SERVERS
+								def ncwserver = serverDetails.HA_NCW_SERVERS
+								def backend = serverDetails.BACKEND
+								def sockFileLoc = serverDetails.SOCKFILE
 								def server
 								
 			
@@ -48,13 +48,14 @@ pipeline {
 									server = ncwserver
 									println "NCW server are: " + server
 								}
-								def result =performaction(haproxyservers, backend, server, action, sockfileloc )
+								def result =performAction(HAProxyServers, backend, server, action, sockFileLoc )
 								
-								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+								publishResults = publishResults + "payment-edge-api: " + result+ "\n"
 									
 									
 							}catch(Exception e) {
-								paymentedgeapi ='Failed'
+								result ='Failed'
+								publishResults = publishResults + "payment-edge-api: " + result+ "\n"
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
@@ -72,13 +73,13 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application c3po"								
-								//def serverdetails = readJSON file: 'c3po.json'
-								def serverdetails = readJSON file: 'c3po_test.json'
-								def haproxyservers = serverdetails.HAPROXY_SERVERS 
-								def nceserver = serverdetails.HANCESERVERS
-								def ncwserver = serverdetails.HANCWSERVERS
-								def backend = serverdetails.BACKEND
-								def sockfileloc = serverdetails.SOCKFILE
+								//def serverDetails = readJSON file: 'c3po.json'
+								def serverDetails = readJSON file: 'c3po.json'
+								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
+								def nceserver = serverDetails.HA_NCE_SERVERS
+								def ncwserver = serverDetails.HA_NCW_SERVERS
+								def backend = serverDetails.BACKEND
+								def sockFileLoc = serverDetails.SOCKFILE
 								def server
 
 								if(datacenter =='NCE'){
@@ -89,11 +90,12 @@ pipeline {
 									server = ncwserver
 									println "NCW server are: " + server
 								}
-								def result = performaction(haproxyservers, backend, server, action, sockfileloc )				
-								publishresults = publishresults + "c3po: " + result+ "\n"
+								def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )				
+								publishResults = publishResults + "c3po: " + result+ "\n"
 								
 							}catch(Exception e) {
-								c3po ='Failed'
+								result ='Failed'
+								publishResults = publishResults + "c3po: " + result+ "\n"
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
@@ -111,13 +113,13 @@ pipeline {
 					script{
 						try {
 							println "Performing "+ action +" on application core"	
-							//def serverdetails = readJSON file: 'core.json'
-							def serverdetails = readJSON file: 'core_test.json'
-							def haproxyservers = serverdetails.HAPROXY_SERVERS 
-							def nceserver = serverdetails.NCESERVERS
-							def ncwserver = serverdetails.NCWSERVERS
-							def backend = serverdetails.BACKEND
-							def sockfileloc = serverdetails.SOCKFILE
+							//def serverDetails = readJSON file: 'core.json'
+							def serverDetails = readJSON file: 'core.json'
+							def HAProxyServers = serverDetails.HAPROXY_SERVERS 
+							def nceserver = serverDetails.NCESERVERS
+							def ncwserver = serverDetails.NCWSERVERS
+							def backend = serverDetails.BACKEND
+							def sockFileLoc = serverDetails.SOCKFILE
 							def server
 
 							if(datacenter =='NCE'){
@@ -128,11 +130,12 @@ pipeline {
 								server = ncwserver
 								println "NCW server are: " + server
 							}
-							def result = performaction(haproxyservers, backend, server, action, sockfileloc )	
-							publishresults = publishresults + "core: " + result+ "\n"
+							def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )	
+							publishResults = publishResults + "core: " + result+ "\n"
 							
 						}catch(Exception e) {
-							core ='Failed'
+							result ='Failed'
+							publishResults = publishResults + "core: " + result+ "\n"
 							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 							}
@@ -145,29 +148,29 @@ pipeline {
 	}
 	/*post {
 	always {
-			println publishresults
+			println publishResults
 		}
 	}*/
     post {
 	always {
-		println publishresults
+		println publishResults
 		/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
-		message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishresults}] ",
+		message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishResults}] ",
 		spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
 		spaceName: 'MamtaKT']]  */
 	}
 } 
 	
 }
-def performaction(Object haproxyservers, Object backend, Object server, String action, Object sockfileloc ){
+def performAction(Object HAProxyServers, Object backend, Object server, String action, Object sockFileLoc ){
 	def result ='Success'
-	for(ha in haproxyservers) {
+	for(ha in HAProxyServers) {
 		def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
 		for(bknd in backend) {
 			for(s in server) {
-				echo "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+				echo "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockFileLoc'"
 				try{
-					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockFileLoc'"
 					
 				}catch(Exception e) {
 					result ='Failure'	
