@@ -30,7 +30,7 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application payment-edge-api"								
-								def serverDetails = readJSON file: 'Patching_cycle_07_10/data/payment-edge-api.json'
+								def serverDetails = readJSON file: 'payment-edge-api.json'
 								//def serverDetails = readJSON file: 'payment-edge-api.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
 								def nceserver = serverDetails.HA_NCE_SERVERS
@@ -71,10 +71,10 @@ pipeline {
 					}
 					steps {
 						script{
-							try {
+							//try {
 								println "Performing "+ action +" on application c3po"								
 								//def serverDetails = readJSON file: 'c3po.json'
-								def serverDetails = readJSON file: 'Patching_cycle_07_10/data/c3po.json'
+								def serverDetails = readJSON file: 'c3po.json'
 								def HAProxyServers = serverDetails.HAPROXY_SERVERS 
 								def nceserver = serverDetails.HA_NCE_SERVERS
 								def ncwserver = serverDetails.HA_NCW_SERVERS
@@ -93,13 +93,13 @@ pipeline {
 								def result = performAction(HAProxyServers, backend, server, action, sockFileLoc )				
 								publishResults = publishResults + "c3po: " + result+ "\n"
 								
-							}catch(Exception e) {
+							/*}catch(Exception e) {
 								result ='Failed'
 								publishResults = publishResults + "c3po: " + result+ "\n"
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
-							}
+							} */
 						}
 					}      
 				}
@@ -114,7 +114,7 @@ pipeline {
 						try {
 							println "Performing "+ action +" on application core"	
 							//def serverDetails = readJSON file: 'core.json'
-							def serverDetails = readJSON file: 'Patching_cycle_07_10/data/core.json'
+							def serverDetails = readJSON file: 'core.json'
 							def HAProxyServers = serverDetails.HAPROXY_SERVERS 
 							def nceserver = serverDetails.NCE_SERVERS
 							def ncwserver = serverDetails.NCW_SERVERS
