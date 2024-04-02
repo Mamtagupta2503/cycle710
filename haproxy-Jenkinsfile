@@ -1,0 +1,183 @@
+def application =params.Application
+def action =params.Action
+def datacenter =params.DC
+def publishresults=''
+def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+
+pipeline {
+    agent any
+
+    stages {
+
+		stage('Parallel execution') {
+			parallel {
+				stage('Job parameters'){
+				steps {
+						script{
+							println "application : " + application
+							println "Action : " + action
+							println "datacenter : " + datacenter
+						}
+					}	
+				}
+				stage('payment-edge-api') {
+					when {
+						expression {
+						'payment-edge-api' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application payment-edge-api"								
+								def serverdetails = readJSON file: 'payment-edge-api_test.json'
+								//def serverdetails = readJSON file: 'payment-edge-api.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.HANCESERVERS
+								def ncwserver = serverdetails.HANCWSERVERS
+								def backend = serverdetails.BACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def server
+								
+			
+								if(datacenter =='NCE'){
+									 server = nceserver
+									 println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
+								def result =performaction(haproxyservers, backend, server, action, sockfileloc )
+								
+								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+									
+									
+							}catch(Exception e) {
+								paymentedgeapi ='Failed'
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
+				stage('c3po') {
+					when {
+						expression {
+						'c3po' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application c3po"								
+								//def serverdetails = readJSON file: 'c3po.json'
+								def serverdetails = readJSON file: 'c3po_test.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.HANCESERVERS
+								def ncwserver = serverdetails.HANCWSERVERS
+								def backend = serverdetails.BACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def server
+
+								if(datacenter =='NCE'){
+									 server = nceserver
+									 println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
+								def result = performaction(haproxyservers, backend, server, action, sockfileloc )				
+								publishresults = publishresults + "c3po: " + result+ "\n"
+								
+							}catch(Exception e) {
+								c3po ='Failed'
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
+				stage('core') {
+					when {
+						expression {
+						'core' in application||'ALL' in application
+						}
+					}
+				steps {
+					script{
+						try {
+							println "Performing "+ action +" on application core"	
+							//def serverdetails = readJSON file: 'core.json'
+							def serverdetails = readJSON file: 'core_test.json'
+							def haproxyservers = serverdetails.HAPROXY_SERVERS 
+							def nceserver = serverdetails.NCESERVERS
+							def ncwserver = serverdetails.NCWSERVERS
+							def backend = serverdetails.BACKEND
+							def sockfileloc = serverdetails.SOCKFILE
+							def server
+
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+							}
+							def result = performaction(haproxyservers, backend, server, action, sockfileloc )	
+							publishresults = publishresults + "core: " + result+ "\n"
+							
+						}catch(Exception e) {
+							core ='Failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}      
+				}
+			}     
+			}
+		} 
+	}
+	/*post {
+	always {
+			println publishresults
+		}
+	}*/
+    post {
+	always {
+		publishresults
+		/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+		message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishresults}] ",
+		spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
+		spaceName: 'MamtaKT']]  */
+	}
+} 
+	
+}
+def performaction(Object haproxyservers, Object backend, Object server, String action, Object sockfileloc ){
+	def result ='Success'
+	for(ha in haproxyservers) {
+		def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+		for(bknd in backend) {
+			for(s in server) {
+				echo "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+				try{
+					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+					
+				}catch(Exception e) {
+					result ='Failure'	
+					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+						sh "exit 1"
+					}
+				}
+			}
+		}
+	}
+	return result
+}
+
