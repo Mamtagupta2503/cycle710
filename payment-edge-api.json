@@ -54,10 +54,3 @@
 	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
 
 }
-
- 	SERVERS=("22.242.1.163")
-  elif [[ "$APP_NAME" == *"hazelcast"* && "$server" == *"NCE_servers"* ]]; then
-  	SERVERS=("22.240.0.210" "22.240.0.47" "22.240.0.50")
-  elif [[ "$APP_NAME" == *"hazelcast"* && "$server" == *"NCW_servers"* ]]; then
-  	SERVERS=("22.242.0.159" "22.242.0.22" "22.242.0.54")
-  fi
