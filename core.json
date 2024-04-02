@@ -1,0 +1,24 @@
+{
+    "HAPROXY_SERVERS": [
+    "api-haproxy1-prod.nce.webapps.rr.com",
+    "api-haproxy2-prod.nce.webapps.rr.com",
+    "api-haproxy1-prod.ncw.webapps.rr.com",
+    "api-haproxy2-prod.ncw.webapps.rr.com"
+	 ],
+    "NCE_SERVERS": [
+	"recomm-eng1-prod-nce.webapps.rr.com",
+    "recomm-eng2-prod-nce.webapps.rr.com"
+    ],
+    "NCW_SERVERS": [
+	"recomm-eng1-prod-ncw.webapps.rr.com",
+    "recomm-eng2-prod-ncw.webapps.rr.com"
+    
+    ],
+    "BACKEND": [
+        "www-recomm_eng"
+    ],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	
+	"DIRECTORY": "/data/apps/css-core/corerec"
+
+}

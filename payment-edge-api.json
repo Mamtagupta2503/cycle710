@@ -1,0 +1,63 @@
+{
+    "HAPROXY_SERVERS": [
+     "oob-pcihaproxy1-prod.nce.corp.chartercom.com", 
+	 "oob-pcihaproxy2-prod.nce.corp.chartercom.com",
+	 "oob-pcihaproxy1-prod.ncw.corp.chartercom.com",
+	 "oob-pcihaproxy2-prod.ncw.corp.chartercom.com"
+	 ],
+    "HA_NCE_SERVERS": [
+	"spsedgeservernce09",
+    "spsedgeservernce10",
+	"spsedgeservernce11"
+    ],
+    "HA_NCW_SERVERS": [
+	"spsedgeserverncw25",
+    "spsedgeserverncw26",
+	"spsedgeserverncw27"
+    ],	
+	"NCE_SERVERS": [
+	"22.240.20.7",
+    "22.240.20.6",
+	"22.240.20.8"
+    ],
+    "NCW_SERVERS": [
+	"22.240.20.13",
+    "22.240.20.11",
+	"22.240.20.12"
+    ],
+	"ADMIN_NCE_SERVERS": [
+	"22.240.20.7"
+    ],
+	"ADMIN_NCW_SERVERS": [
+	"22.240.20.13"
+    ],
+    "BACKEND": [
+        "www-bops"
+    ],
+	"APP":[
+		"payment-edge-api",
+		"services-server-gateway",
+		"services-server-eureka"
+	],
+	"HAZELCAST_NCE_SERVERS": [
+		"22.240.0.210",
+		"22.240.0.47",
+		"22.240.0.50"],
+
+    "HAZELCAST_NCW_SERVERS": [
+		"22.242.0.159",
+		"22.242.0.22", 
+		"22.242.0.54"
+	],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
+
+ 	SERVERS=("22.242.1.163")
+  elif [[ "$APP_NAME" == *"hazelcast"* && "$server" == *"NCE_servers"* ]]; then
+  	SERVERS=("22.240.0.210" "22.240.0.47" "22.240.0.50")
+  elif [[ "$APP_NAME" == *"hazelcast"* && "$server" == *"NCW_servers"* ]]; then
+  	SERVERS=("22.242.0.159" "22.242.0.22" "22.242.0.54")
+  fi

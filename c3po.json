@@ -1,0 +1,96 @@
+{
+    "HAPROXY_SERVERS": [
+		 "api-haproxy1-prod.nce.webapps.rr.com", 
+		 "api-haproxy2-prod.nce.webapps.rr.com",
+		 "api-haproxy1-prod.ncw.webapps.rr.com",
+		 "api-haproxy2-prod.ncw.webapps.rr.com"
+	 ],
+    "HA_NCE_SERVERS": [
+		"c3poprodservernce_vm19",
+		"c3poprodservernce_vm20",
+		"c3poprodservernce_vm21",
+		"c3poprodservernce_vm27",
+		"c3poprodservernce_vm28",
+		"c3poprodservernce_vm04",
+		"c3poprodservernce_vm36",
+		"c3poprodservernce_vm02"
+    ],
+    "HA_NCW_SERVERS": [
+		"c3poprodserverncw_vm33",
+		"c3poprodserverncw_vm34",
+		"c3poprodserverncw_vm35",
+		"c3poprodserverncw_vm42",
+		"c3poprodserverncw_vm41",
+		"c3poprodserverncw_vmmoa34",
+		"c3poprodserverncw_vm44",
+		"c3poprodserverncw_vm03"
+    ],
+	"APP_NCE_SERVERS": [
+		"22.240.0.27",
+		"22.240.0.30",
+		"22.240.0.29",
+		"22.240.0.44",
+		"22.240.0.210",
+		"22.240.86.137",
+		"22.240.0.53",
+		"22.240.0.47"
+    ],
+    "APP_NCW_SERVERS": [
+		"22.242.0.14",
+		"22.242.0.18",
+		"22.242.0.24",
+		"22.242.0.19",
+		"22.242.0.159",
+		"22.242.84.90",
+		"22.242.0.22",
+		"22.242.0.53"
+	],	
+	
+	"KAFKA_ZK_NCE_SERVERS": [
+		"22.240.0.27",
+		"22.240.0.30",
+		"22.240.0.29",
+		"22.240.0.44",
+		"22.240.0.210",
+		"22.240.86.137",
+		"22.240.0.53",
+		"22.240.0.47"
+    ],
+    "KAFKA_ZK_NCW_SERVERS": [
+		"22.242.0.14",
+		"22.242.0.18",
+		"22.242.0.24",
+		"22.242.0.19",
+		"22.242.0.159",
+		"22.242.84.90",
+		"22.242.0.22",
+		"22.242.0.53"
+    ],
+	"ADMIN_NCE_SERVERS": [
+		"22.240.0.210"
+	]
+	"ADMIN_NCW_SERVERS": [
+		"22.242.0.159"
+	]
+	"CONFIG_EUREKA_NCE_SERVERS": [
+		"22.240.0.29",
+		"22.240.0.44",
+		"22.240.0.210"
+	]
+	"CONFIG_EUREKA_NCW_SERVERS": [
+		"22.242.0.24",
+		"22.242.0.19",
+		"22.242.0.159"
+	]
+	"APP":[
+		"c3po",
+		"services-server-gateway"
+	],
+    "BACKEND": [
+        "www-c3po"
+    ],
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+	
+	"DIRECTORY": "cd /data/apps/<service_Name>/bin"
+
+}
