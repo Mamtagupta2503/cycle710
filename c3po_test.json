@@ -3,42 +3,42 @@
 		 "vm0pnoobsxa0031", 
 		 "vm0pnoobsxa0031"
 	 ],
-    "HA_NCESERVERS": [
+    "HA_NCE_SERVERS": [
 		"c3potest_1",
 		"c3potest_2"
     ],
-    "HA_NCWSERVERS": [
+    "HA_NCW_SERVERS": [
 		"ncwc3potest_vm1",
 		"ncwc3potest_vm2"
     ],
-	"APPNCESERVERS": [
+	"APP_NCE_SERVERS": [
 		"ncetest.1",
 		"ncetest.2"
     ],
-    "APPNCWSERVERS": [
+    "APP_NCW_SERVERS": [
 		"ncwtest.1",
 		"ncwtest.2"
 	],	
 	
-	"KAFKA_ZK_NCESERVERS": [
+	"KAFKA_ZK_NCE_SERVERS": [
 		"ncetest.1",
 		"ncetest.2"
     ],
-    "KAFKA_ZK_NCWSERVERS": [
+    "KAFKA_ZK_NCW_SERVERS": [
 		"ncwtest.1",
 		"ncwtest.2"
     ],
-	"ADMINNCESERVERS": [
+	"ADMIN_NCE_SERVERS": [
 		"ncetest.1"
 	],
-	"ADMINNCWSERVERS": [
+	"ADMIN_NCW_SERVERS": [
 		"ncwtest.1"
 	],
-	"CONFIG_EUREKA_NCESERVERS": [
+	"CONFIG_EUREKA_NCE_SERVERS": [
 		"ncetest.1",
 		"ncetest.2"
 	],
-	"CONFIG_EUREKA_NCWSERVERS": [
+	"CONFIG_EUREKA_NCW_SERVERS": [
 		"ncwtest.1",
 		"ncwtest.2"
 	],
