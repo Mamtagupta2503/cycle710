@@ -290,8 +290,7 @@ def kafkaZookeepStartStop(String appName, Object server, String action){
 	def counter =0
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "${action} on server ${s} for app ${appName}" 
-		echo "print shell command $SSH_OPTION sudo service ${appName}-${counter} ${action}"
+		echo "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
 		//sh "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
 		counter = counter +1
 	}
@@ -299,22 +298,21 @@ def kafkaZookeepStartStop(String appName, Object server, String action){
 def appStartStop(String appName, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "${action} on server ${s} for app ${appName}" 
-		echo "print shell command $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'" 
+		echo "command $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'" 
 		//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"	
 	}
 }
 def startstopelasticsearch(Object server,String action){
 	for(s in server) {
 		SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "println command: sudo systemctl ${action} elasticsearch.service"
+		echo "sudo systemctl ${action} elasticsearch.service"
 		//sh "$SSH_OPTION sudo systemctl ${action} elasticsearch.service"
 	}
 }
 def startstopcore(String home_folder, Object server,String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "print shell command $SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
+		echo "$SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
 		//sh "$SSH_OPTION sudo su - core_user -c '$HOME_FOLDER/app-${action}.sh'"	
 	}
 }	
