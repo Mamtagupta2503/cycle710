@@ -41,12 +41,14 @@ pipeline {
 									adminserver = nceadminserver
                                     println "nce servers are: " + server
 									println "nce adminserver : " + adminserver
+									println "appName from bitbucket : " + appName
                                 }
                                 else if(datacenter =='NCW'){
                                     server = ncwserver
 									adminserver = ncwadminserver
                                     println "ncw servers are: " + server
 									println "ncw adminserver : " + adminserver
+									println "appName from bitbucket : " + appName
                                 }
 								if(action =='status' && application =='All' ){
 									for(app in appName) {
@@ -115,8 +117,8 @@ pipeline {
                                 println "Performing "+ action +" on application c3po"
                                 //def serverdetails = readJSON file: 'Patching_cycle_07_10/c3po.json'
 								def serverdetails = readJSON file: 'c3po.json'
-                                def nceserver = serverdetails.APPNCE_SERVERS
-                                def ncwserver = serverdetails.APPNCW_SERVERS
+                                def nceserver = serverdetails.APP_NCE_SERVERS
+                                def ncwserver = serverdetails.APP_NCW_SERVERS
 								def kznceserver= serverdetails.KAFKA_ZK_NCE_SERVERS
 								def kzncwserver= serverdetails.KAFKA_ZK_NCW_SERVERS
 								def nceadminserver = serverdetails.ADMIN_NCE_SERVERS
