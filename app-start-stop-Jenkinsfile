@@ -1,7 +1,7 @@
 def datacenter =params.DC
 def action =params.Action
 def application =params.Application
-def apifromparameter =params.api 
+def apiFromParameter =params.api 
 def appServersFromParam = params.server
 def paymentedgeapi=''
 def core=''
@@ -26,31 +26,31 @@ pipeline {
                             try{
                                 println "Performing "+ action +" on application payment-edge-api"
                                 def serverdetails = readJSON file: 'payment-edge-api.json'
-								def nceserver = serverdetails.NCE_SERVERS
-                                def ncwserver = serverdetails.NCW_SERVERS
-								def nceadminserver = serverdetails.ADMIN_NCE_SERVERS
-                                def ncwadminserver = serverdetails.ADMIN_NCW_SERVERS
-								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+								def nceServer = serverdetails.NCE_SERVERS
+                                def ncwServer = serverdetails.NCW_SERVERS
+								def nceAdminServer = serverdetails.ADMIN_NCE_SERVERS
+                                def ncwAdminServer = serverdetails.ADMIN_NCW_SERVERS
+								def apiFromParameter = Arrays.asList((apiFromParameter).split(","))
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse(); // reversing the appname to maintain the start sequence
 								def server
-								def adminserver
+								def adminServer
 								//def app
                          
                                 if(application =='All') {
 									if(datacenter =='NCE'){
-										server = nceserver
-										adminserver = nceadminserver
+										server = nceServer
+										adminServer = nceAdminServer
 										println "nce servers are: " + server
-										println "nce adminserver : " + adminserver
+										println "nce adminServer : " + adminServer
 										println "appName from bitbucket : " + appName
 									}
 									else if(datacenter =='NCW'){
-										server = ncwserver
-										adminserver = ncwadminserver
+										server = ncwServer
+										adminServer = ncwAdminServer
 										println "ncw servers are: " + server
-										println "ncw adminserver : " + adminserver
+										println "ncw adminServer : " + adminServer
 										println "appName from bitbucket : " + appName
 									}
 								}
@@ -64,7 +64,7 @@ pipeline {
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
-								appStartStop('services-server-admin', adminserver,action)
+								appStartStop('services-server-admin', adminServer,action)
 								appStartStop('services-server-config', server,action)
 								kafkaZookeepStartStop('kafka',server,action)
 								kafkaZookeepStartStop('zookeeper',server,action)								
@@ -73,7 +73,7 @@ pipeline {
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
-									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-admin', adminServer,action)
 									appStartStop('services-server-config', server,action)
 									kafkaZookeepStartStop('kafka',server,action)
 									kafkaZookeepStartStop('zookeeper',server,action)								
@@ -85,19 +85,19 @@ pipeline {
 									kafkaZookeepStartStop('kafka',server,action)
 									sleep 60
 									appStartStop('services-server-config', server,action)
-									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-admin', adminServer,action)
 									for(app in reverseApp) {
 										appStartStop(app, server,action)
 									}
 								}
-								if(apifromparameter =='payment-edge-api'|| apifromparameter =='services-server-config' || apifromparameter=='services-server-gateway'||apifromparameter=='services-server-eureka' ||apifromparameter =='services-server-admin'){
-								  println 'app selected from input parameter: ' + apifromparameter
-								  appStartStop(apifromparameter, server,action)						
+								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
+								  println 'app selected from input parameter: ' + apiFromParameter
+								  appStartStop(apiFromParameter, server,action)						
 								}
 
-								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
-								 println 'app selected from input parameter: ' + apifromparameter
-								 //kafkaZookeepStartStop(apifromparameter,server,action) // TO-DO
+								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
+								 println 'app selected from input parameter: ' + apiFromParameter
+								 //kafkaZookeepStartStop(apiFromParameter,server,action) // TO-DO
 								  
 								}
 							}catch(Exception e) 
@@ -123,66 +123,59 @@ pipeline {
                             try{
                                 println "Performing "+ action +" on application c3po"
                                 def serverdetails = readJSON file: 'c3po.json'
-								def nceserver = serverdetails.APP_NCE_SERVERS
-                                def ncwserver = serverdetails.APP_NCW_SERVERS
-								def kznceserver= serverdetails.KAFKA_ZK_NCE_SERVERS
-								def kzncwserver= serverdetails.KAFKA_ZK_NCW_SERVERS
-								def nceadminserver = serverdetails.ADMIN_NCE_SERVERS
-                                def ncwadminserver = serverdetails.ADMIN_NCW_SERVERS
-								def nceconfigeurekaserver = serverdetails.CONFIG_EUREKA_NCE_SERVERS
-								def ncwconfigeurekaserver = serverdetails.CONFIG_EUREKA_NCW_SERVERS
+								def nceServer = serverdetails.APP_NCE_SERVERS
+                                def ncwServer = serverdetails.APP_NCW_SERVERS
+								def kznceServer= serverdetails.KAFKA_ZK_NCE_SERVERS
+								def kzncwServer= serverdetails.KAFKA_ZK_NCW_SERVERS
+								def nceAdminServer = serverdetails.ADMIN_NCE_SERVERS
+                                def ncwAdminServer = serverdetails.ADMIN_NCW_SERVERS
+								def nceConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCE_SERVERS
+								def ncwConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCW_SERVERS
+								def apiFromParameter = Arrays.asList((apiFromParameter).split(","))
+								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse();
 								def server
-								def adminserver
+								def adminServer
 								def kzserver
 								def configeurekaserver
                          
-                                if(datacenter =='NCE'){
-                                    server = nceserver
-									adminserver = nceadminserver
-									kzserver = kznceserver
-									configeurekaserver =nceconfigeurekaserver
-                                    println "nce servers are: " + server
-									println "nce adminserver : " + adminserver
-									println "nce kafka/zookeeper servers are: " + kznceserver
-									println "nce eureka config server : " + nceconfigeurekaserver
-                                }
-                                else if(datacenter =='NCW'){
-                                    server = ncwserver
-									adminserver = ncwadminserver
-									kzserver =kzncwserver
-									configeurekaserver=ncwconfigeurekaserver
-                                    println "ncw servers are: " + server
-									println "ncw adminserver : " + adminserver
-									println "ncw kafka/zookeeper servers are: " + kzncwserver
-									println "ncw eureka config server : " + ncwconfigeurekaserver
-                                }
+                                if(application =='All') {
+									if(datacenter =='NCE'){
+										server = nceServer
+										adminServer = nceAdminServer
+										kzserver = kznceServer
+										configeurekaserver =nceConfigEurekaServer
+										println "nce servers are: " + server
+										println "nce adminServer : " + adminServer
+										println "nce kafka/zookeeper servers are: " + kznceServer
+										println "nce eureka config server : " + nceConfigEurekaServer
+									}
+									else if(datacenter =='NCW'){
+										server = ncwServer
+										adminServer = ncwAdminServer
+										kzserver =kzncwServer
+										configeurekaserver=ncwConfigEurekaServer
+										println "ncw servers are: " + server
+										println "ncw adminServer : " + adminServer
+										println "ncw kafka/zookeeper servers are: " + kzncwServer
+										println "ncw eureka config server : " + ncwConfigEurekaServer
+									}
+								}
+								else 
+								{
+									server = appServersFromParamArray
+									println "server selected from job parameter: " + server
+									println "api selected from job parameter: " + apiFromParameter
+								}
 								
-								if(apifromparameter =='c3po' || apifromparameter=='services-server-gateway'){
-									println 'app selected from input parameter: ' + apifromparameter
-									appStartStop(apifromparameter, server,action)
-								
-								}
-								else if(apifromparameter =='services-server-admin'){
-									println 'app selected from input parameter: ' + apifromparameter
-									appStartStop(apifromparameter, adminserver,action)
-								}
-								else if(apifromparameter =='services-server-config'|| apifromparameter=='services-server-eureka'){
-									println 'app selected from input parameter: ' + apifromparameter
-									appStartStop(apifromparameter, configeurekaserver,action)
-								}
-								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
-									println 'app selected from input parameter: ' + apifromparameter
-									kafkaZookeepStartStop(apifromparameter,kzserver,action)
-								  
-								}
+				
 								if(action =='status' && application =='All'){
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}						
 									appStartStop('services-server-eureka', configeurekaserver,action)
-									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-admin', adminServer,action)
 									appStartStop('services-server-config', configeurekaserver,action)
 									kafkaZookeepStartStop('kafka',kzserver,action)
 									kafkaZookeepStartStop('zookeeper',kzserver,action)								
@@ -192,7 +185,7 @@ pipeline {
 										appStartStop(app, server,action) //stopping both c3po and gateway in 1 go
 									}
 									appStartStop('services-server-eureka', configeurekaserver,action)
-									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-admin', adminServer,action)
 									appStartStop('services-server-config', configeurekaserver,action)
 									kafkaZookeepStartStop('kafka',kzserver,action)
 									kafkaZookeepStartStop('zookeeper',kzserver,action)									
@@ -204,12 +197,30 @@ pipeline {
 									kafkaZookeepStartStop('kafka',kzserver,action)
 									sleep 60
 									appStartStop('services-server-config', configeurekaserver,action)
-									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-admin', adminServer,action)
 									appStartStop('services-server-eureka', configeurekaserver,action)
 									for(app in reverseApp) {
 										appStartStop(app, server,action)
 									}
 								}
+								
+								if(apiFromParameter =='c3po' || apiFromParameter=='services-server-gateway'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
+								}
+								else if(apiFromParameter =='services-server-admin'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
+								}
+								else if(apiFromParameter =='services-server-config'|| apiFromParameter=='services-server-eureka'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
+								}
+								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
+									println 'app selected from input parameter: ' + apiFromParameter
+									ACTION //TO-DO
+								}
+								
 							}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
@@ -233,20 +244,20 @@ pipeline {
                             try{
                                 println "Performing "+ action +" on application core"
                                 def serverdetails = readJSON file: 'core.json'
-                                def nceserver = serverdetails.NCE_SERVERS
-                                def ncwserver = serverdetails.NCW_SERVERS
+                                def nceServer = serverdetails.NCE_SERVERS
+                                def ncwServer = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
-								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+								def apiFromParameter = Arrays.asList((apiFromParameter).split(","))
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
 								def server
                          
                                 if(application =='All') {
 									if(datacenter =='NCE'){
-										server = nceserver
+										server = nceServer
 										println "nce servers are: " + server
 									}
 									else if(datacenter =='NCW'){
-										server = ncwserver
+										server = ncwServer
 										println "ncw servers are: " + server
 									}
 								}
@@ -254,7 +265,7 @@ pipeline {
 								{	
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
-									println "api selected from job parameter: " + apiparamaterarray
+									println "api selected from job parameter: " + apiFromParameter
                                 }
 								//performing action if All is selected from Application dropdown
 								if(action =='status' && application =='All'){
@@ -274,11 +285,11 @@ pipeline {
 								}
 								
 								//performing action if core is selected from Application dropdown
-								if(apifromparameter =='core'){
+								if(apiFromParameter =='core'){
 									startstopcore(homefolder,server,action)
 								
 								}
-								else if(apifromparameter =='elasticsearch'){
+								else if(apiFromParameter =='elasticsearch'){
 									startstopelasticsearch(server,action) 
 								}
 							}catch(Exception e) 
