@@ -340,7 +340,7 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 			else if(s=='22.240.0.29'|| s == '22.242.0.24'){
 				c3poCounter = 2
 			}
-			else if(s =='22.240.0.30' || s ='22.242.0.18'){
+			else if(s =='22.240.0.30' || s =='22.242.0.18'){
 				c3poCounter = 3
 			}
 			else if (s =='22.240.0.27' || s =='22.242.0.14'){
