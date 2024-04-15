@@ -35,6 +35,7 @@ pipeline {
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse(); // reversing the appname to maintain the start sequence
 								def server
+								def adminserver
 								//def app
                          
                                 if(application =='All') {
@@ -89,16 +90,11 @@ pipeline {
 										appStartStop(app, server,action)
 									}
 								}
-								if(apifromparameter =='payment-edge-api'|| apifromparameter =='services-server-config' || apifromparameter=='services-server-gateway'||apifromparameter=='services-server-eureka'){
+								if(apifromparameter =='payment-edge-api'|| apifromparameter =='services-server-config' || apifromparameter=='services-server-gateway'||apifromparameter=='services-server-eureka' ||apifromparameter =='services-server-admin'){
 								  println 'app selected from input parameter: ' + apifromparameter
-								  appStartStop(apifromparameter, server,action)
-								
+								  appStartStop(apifromparameter, server,action)						
 								}
-								else if(apifromparameter =='services-server-admin'){
-								 println 'app selected from input parameter: ' + apifromparameter
-								  echo apifromparameter
-								  appStartStop(apifromparameter, adminserver,action)
-								}
+
 								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apifromparameter
 								 kafkaZookeepStartStop(apifromparameter,server,action)
