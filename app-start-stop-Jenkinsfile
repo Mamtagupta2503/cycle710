@@ -192,7 +192,9 @@ pipeline {
 
                                 else if(action =='start' && application =='All'){
 									kafkaZookeepStartStop('zookeeper',kzserver,action)
+									sleep 60
 									kafkaZookeepStartStop('kafka',kzserver,action)
+									sleep 60
 									appStartStop('services-server-config', configeurekaserver,action)
 									appStartStop('services-server-admin', adminserver,action)
 									appStartStop('services-server-eureka', configeurekaserver,action)
