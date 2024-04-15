@@ -30,7 +30,7 @@ pipeline {
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def nceAdminServer = serverdetails.ADMIN_NCE_SERVERS
                                 def ncwAdminServer = serverdetails.ADMIN_NCW_SERVERS
-								def apiFromParameterArray = Arrays.asList((apiFromParameter).split(","))
+								
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse(); // reversing the appname to maintain the start sequence
@@ -91,13 +91,13 @@ pipeline {
 									}
 								}
 								
-								if(apiFromParameterArray =='payment-edge-api'|| apiFromParameterArray =='services-server-config' || apiFromParameterArray=='services-server-gateway'||apiFromParameterArray=='services-server-eureka' ||apiFromParameterArray =='services-server-admin'){
-								  println 'app selected from input parameter: ' + apiFromParameterArray
-								  appStartStop(apiFromParameterArray, server,action)						
+								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
+								  println 'app selected from input parameter: ' + apiFromParameter
+								  appStartStop(apiFromParameter, server,action)						
 								}
 
-								else if(apiFromParameterArray =='kafka' ||apiFromParameterArray =='zookeeper' ){
-								 println 'app selected from input parameter: ' + apiFromParameterArray
+								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
+								 println 'app selected from input parameter: ' + apiFromParameter
 								 //kafkaZookeepStartStop(apiFromParameter,server,action) // TO-DO
 								  
 								}
@@ -132,7 +132,7 @@ pipeline {
                                 def ncwAdminServer = serverdetails.ADMIN_NCW_SERVERS
 								def nceConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCE_SERVERS
 								def ncwConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCW_SERVERS
-								def apiFromParameterArray = Arrays.asList((apiFromParameter).split(","))
+								
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse();
@@ -167,7 +167,7 @@ pipeline {
 								{
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
-									println "api selected from job parameter: " + apiFromParameterArray
+									println "api selected from job parameter: " + apiFromParameter
 								}
 								
 				
@@ -205,20 +205,20 @@ pipeline {
 									}
 								}
 								
-								if(apiFromParameterArray =='c3po' || apiFromParameterArray=='services-server-gateway'){
-									println 'app selected from input parameter: ' + apiFromParameterArray
-									appStartStop(apiFromParameterArray, server,action)
+								if(apiFromParameter =='c3po' || apiFromParameter =='services-server-gateway'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
 								}
-								else if(apiFromParameterArray =='services-server-admin'){
-									println 'app selected from input parameter: ' + apiFromParameterArray
-									appStartStop(apiFromParameterArray, server,action)
+								else if(apiFromParameter =='services-server-admin'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
 								}
-								else if(apiFromParameterArray =='services-server-config'|| apiFromParameterArray=='services-server-eureka'){
-									println 'app selected from input parameter: ' + apiFromParameterArray
-									appStartStop(apiFromParameterArray, server,action)
+								else if(apiFromParameter =='services-server-config'|| apiFromParameter=='services-server-eureka'){
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)
 								}
-								else if(apiFromParameterArray =='kafka' ||apiFromParameterArray =='zookeeper' ){
-									println 'app selected from input parameter: ' + apiFromParameterArray
+								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
+									println 'app selected from input parameter: ' + apiFromParameter
 									ACTION //TO-DO
 								}
 								
@@ -248,7 +248,7 @@ pipeline {
                                 def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
-								def apiFromParameterArray = Arrays.asList((apiFromParameter).split(","))
+								
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
 								def server
                          
@@ -266,7 +266,7 @@ pipeline {
 								{	
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
-									println "api selected from job parameter: " + apiFromParameterArray
+									println "api selected from job parameter: " + apiFromParameter
                                 }
 								//performing action if All is selected from Application dropdown
 								if(action =='status' && application =='All'){
@@ -286,11 +286,11 @@ pipeline {
 								}
 								
 								//performing action if core is selected from Application dropdown
-								if(apiFromParameterArray =='core'){
+								if(apiFromParameter =='core'){
 									startstopcore(homefolder,server,action)
 								
 								}
-								else if(apiFromParameterArray =='elasticsearch'){
+								else if(apiFromParameter =='elasticsearch'){
 									startstopelasticsearch(server,action) 
 								}
 							}catch(Exception e) 
