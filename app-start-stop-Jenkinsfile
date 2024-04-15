@@ -97,7 +97,7 @@ pipeline {
 
 								else if(apifromparameter =='kafka' ||apifromparameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apifromparameter
-								 kafkaZookeepStartStop(apifromparameter,server,action)
+								 //kafkaZookeepStartStop(apifromparameter,server,action) // TO-DO
 								  
 								}
 							}catch(Exception e) 
@@ -236,16 +236,27 @@ pipeline {
                                 def nceserver = serverdetails.NCE_SERVERS
                                 def ncwserver = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
+								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
 								def server
                          
-                                if(datacenter =='NCE'){
-                                    server = nceserver
-                                    println "nce servers are: " + server
-                                }
-                                else if(datacenter =='NCW'){
-                                    server = ncwserver
-                                    println "ncw servers are: " + server
+                                if(application =='All') {
+									if(datacenter =='NCE'){
+										server = nceserver
+										println "nce servers are: " + server
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										println "ncw servers are: " + server
+									}
 								}
+								else 
+								{	
+									server = appServersFromParamArray
+									println "server selected from job parameter: " + server
+									println "api selected from job parameter: " + apiparamaterarray
+                                }
+								//performing action if All is selected from Application dropdown
 								if(action =='status' && application =='All'){
 									
 									startstopcore(homefolder, server,action)
@@ -254,21 +265,21 @@ pipeline {
 								else if(action =='stop' && application =='All'){
 									
 									startstopcore(homefolder,server,action)
-									startstopelasticsearch(server,action) //need too add code and input param
+									startstopelasticsearch(server,action) 
 									
 								}
                                 else if(action =='start' && application =='All'){
 									startstopcore(homefolder,server,action)
-									startstopelasticsearch(server,action) //need too add code and input param
+									startstopelasticsearch(server,action) 
 								}
+								
+								//performing action if core is selected from Application dropdown
 								if(apifromparameter =='core'){
-									println 'app selected from input parameter: ' + apifromparameter
 									startstopcore(homefolder,server,action)
 								
 								}
 								else if(apifromparameter =='elasticsearch'){
-									println 'app selected from input parameter: ' + apifromparameter
-									startstopelasticsearch(server,action) //need too add code and input param
+									startstopelasticsearch(server,action) 
 								}
 							}catch(Exception e) 
                             {
