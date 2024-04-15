@@ -24,9 +24,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application payment-edge-api"
-                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/payment-edge-api.json'
-								def serverdetails = readJSON file: 'payment-edge-api.json'
-                                def nceserver = serverdetails.NCE_SERVERS
+                                def serverdetails = readJSON file: 'payment-edge-api.json'
+								def nceserver = serverdetails.NCE_SERVERS
                                 def ncwserver = serverdetails.NCW_SERVERS
 								def nceadminserver = serverdetails.ADMIN_NCE_SERVERS
                                 def ncwadminserver = serverdetails.ADMIN_NCW_SERVERS
@@ -52,30 +51,30 @@ pipeline {
                                 }
 								if(action =='status' && application =='All' ){
 									for(app in appName) {
-										appStartStop(app, server,'status')
+										appStartStop(app, server,action)
 									}
-								appStartStop('services-server-admin', adminserver,'status')
-								appStartStop('services-server-config', server,'status')
-								kafkaZookeepStartStop('kafka',server,'status')
-								kafkaZookeepStartStop('zookeeper',server,'status')								
+								appStartStop('services-server-admin', adminserver,action)
+								appStartStop('services-server-config', server,action)
+								kafkaZookeepStartStop('kafka',server,action)
+								kafkaZookeepStartStop('zookeeper',server,action)								
 								}
 								if(action =='stop' && application =='All'){
 									for(app in appName) {
-										appStartStop(app, server,'stop')
+										appStartStop(app, server,action)
 									}
-									appStartStop('services-server-admin', adminserver,'stop')
-									appStartStop('services-server-config', server,'stop')
-									kafkaZookeepStartStop('kafka',server,'stop')
-									kafkaZookeepStartStop('zookeeper',server,'stop')								
+									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-config', server,action)
+									kafkaZookeepStartStop('kafka',server,action)
+									kafkaZookeepStartStop('zookeeper',server,action)								
 								}
 
                                 else if(action =='start' && application =='All'){
-									kafkaZookeepStartStop('zookeeper',server,'start')
-									kafkaZookeepStartStop('kafka',server,'start')
-									appStartStop('services-server-config', server,'start')
-									appStartStop('services-server-admin', adminserver,'start')
+									kafkaZookeepStartStop('zookeeper',server,action)
+									kafkaZookeepStartStop('kafka',server,action)
+									appStartStop('services-server-config', server,action)
+									appStartStop('services-server-admin', adminserver,action)
 									for(app in reverseApp) {
-										appStartStop(app, server,'start')
+										appStartStop(app, server,action)
 									}
 								}
 								if(apifromparameter =='payment-edge-api'|| apifromparameter =='services-server-config' || apifromparameter=='services-server-gateway'||apifromparameter=='services-server-eureka'){
@@ -115,9 +114,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application c3po"
-                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/c3po.json'
-								def serverdetails = readJSON file: 'c3po.json'
-                                def nceserver = serverdetails.APP_NCE_SERVERS
+                                def serverdetails = readJSON file: 'c3po.json'
+								def nceserver = serverdetails.APP_NCE_SERVERS
                                 def ncwserver = serverdetails.APP_NCW_SERVERS
 								def kznceserver= serverdetails.KAFKA_ZK_NCE_SERVERS
 								def kzncwserver= serverdetails.KAFKA_ZK_NCW_SERVERS
@@ -173,33 +171,33 @@ pipeline {
 								}
 								if(action =='status' && application =='All'){
 									for(app in appName) {
-										appStartStop(app, server,'status')
+										appStartStop(app, server,action)
 									}						
-									appStartStop('services-server-eureka', configeurekaserver,'stop')
-									appStartStop('services-server-admin', adminserver,'status')
-									appStartStop('services-server-config', configeurekaserver,'status')
-									kafkaZookeepStartStop('kafka',kzserver,'status')
-									kafkaZookeepStartStop('zookeeper',kzserver,'status')								
+									appStartStop('services-server-eureka', configeurekaserver,action)
+									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-config', configeurekaserver,action)
+									kafkaZookeepStartStop('kafka',kzserver,action)
+									kafkaZookeepStartStop('zookeeper',kzserver,action)								
 								}
 								if(action =='stop' && application =='All'){
 									for(app in appName) {
-										appStartStop(app, server,'stop') //stopping both c3po and gateway in 1 go
+										appStartStop(app, server,action) //stopping both c3po and gateway in 1 go
 									}
-									appStartStop('services-server-eureka', configeurekaserver,'stop')
-									appStartStop('services-server-admin', adminserver,'stop')
-									appStartStop('services-server-config', configeurekaserver,'stop')
-									kafkaZookeepStartStop('kafka',kzserver,'stop')
-									kafkaZookeepStartStop('zookeeper',kzserver,'stop')									
+									appStartStop('services-server-eureka', configeurekaserver,action)
+									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-config', configeurekaserver,action)
+									kafkaZookeepStartStop('kafka',kzserver,action)
+									kafkaZookeepStartStop('zookeeper',kzserver,action)									
 								}
 
                                 else if(action =='start' && application =='All'){
-									kafkaZookeepStartStop('zookeeper',kzserver,'start')
-									kafkaZookeepStartStop('kafka',kzserver,'start')
-									appStartStop('services-server-config', configeurekaserver,'start')
-									appStartStop('services-server-admin', adminserver,'start')
-									appStartStop('services-server-eureka', configeurekaserver,'start')
+									kafkaZookeepStartStop('zookeeper',kzserver,action)
+									kafkaZookeepStartStop('kafka',kzserver,action)
+									appStartStop('services-server-config', configeurekaserver,action)
+									appStartStop('services-server-admin', adminserver,action)
+									appStartStop('services-server-eureka', configeurekaserver,action)
 									for(app in reverseApp) {
-										appStartStop(app, server,'start')
+										appStartStop(app, server,action)
 									}
 								}
 							}catch(Exception e) 
@@ -224,8 +222,7 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application core"
-                                //def serverdetails = readJSON file: 'Patching_cycle_07_10/core.json'
-								def serverdetails = readJSON file: 'core.json'
+                                def serverdetails = readJSON file: 'core.json'
                                 def nceserver = serverdetails.NCE_SERVERS
                                 def ncwserver = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
@@ -241,18 +238,18 @@ pipeline {
 								}
 								if(action =='status' && application =='All'){
 									
-									startstopcore(homefolder, server,'status')
-									startstopelasticsearch(server,'status')		
+									startstopcore(homefolder, server,action)
+									startstopelasticsearch(server,action)		
 								}
 								else if(action =='stop' && application =='All'){
 									
-									startstopcore(homefolder,server,'stop')
-									startstopelasticsearch(server,'stop') //need too add code and input param
+									startstopcore(homefolder,server,action)
+									startstopelasticsearch(server,action) //need too add code and input param
 									
 								}
                                 else if(action =='start' && application =='All'){
-									startstopcore(homefolder,server,'start')
-									startstopelasticsearch(server,'start') //need too add code and input param
+									startstopcore(homefolder,server,action)
+									startstopelasticsearch(server,action) //need too add code and input param
 								}
 								if(apifromparameter =='core'){
 									println 'app selected from input parameter: ' + apifromparameter
