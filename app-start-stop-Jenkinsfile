@@ -2,6 +2,7 @@ def datacenter =params.DC
 def action =params.Action
 def application =params.Application
 def apifromparameter =params.api 
+def appServersFromParam = params.server
 def paymentedgeapi=''
 def core=''
 def c3po=''
@@ -29,25 +30,34 @@ pipeline {
                                 def ncwserver = serverdetails.NCW_SERVERS
 								def nceadminserver = serverdetails.ADMIN_NCE_SERVERS
                                 def ncwadminserver = serverdetails.ADMIN_NCW_SERVERS
-								//def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+								def apiparamaterarray = Arrays.asList((apifromparameter).split(","))
+								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
                                 def appName = serverdetails.APP
 								def reverseApp = appName.reverse(); // reversing the appname to maintain the start sequence
 								def server
 								//def app
                          
-                                if(datacenter =='NCE'){
-                                    server = nceserver
-									adminserver = nceadminserver
-                                    println "nce servers are: " + server
-									println "nce adminserver : " + adminserver
-									println "appName from bitbucket : " + appName
-                                }
-                                else if(datacenter =='NCW'){
-                                    server = ncwserver
-									adminserver = ncwadminserver
-                                    println "ncw servers are: " + server
-									println "ncw adminserver : " + adminserver
-									println "appName from bitbucket : " + appName
+                                if(application =='All') {
+									if(datacenter =='NCE'){
+										server = nceserver
+										adminserver = nceadminserver
+										println "nce servers are: " + server
+										println "nce adminserver : " + adminserver
+										println "appName from bitbucket : " + appName
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										adminserver = ncwadminserver
+										println "ncw servers are: " + server
+										println "ncw adminserver : " + adminserver
+										println "appName from bitbucket : " + appName
+									}
+								}
+								else 
+								{	
+									server = appServersFromParamArray
+									
+									println "server selected from job parameter: " + server
                                 }
 								if(action =='status' && application =='All' ){
 									for(app in appName) {
@@ -70,7 +80,9 @@ pipeline {
 
                                 else if(action =='start' && application =='All'){
 									kafkaZookeepStartStop('zookeeper',server,action)
+									sleep 60
 									kafkaZookeepStartStop('kafka',server,action)
+									sleep 60
 									appStartStop('services-server-config', server,action)
 									appStartStop('services-server-admin', adminserver,action)
 									for(app in reverseApp) {
