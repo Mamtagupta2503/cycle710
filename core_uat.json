@@ -1,0 +1,12 @@
+{
+    "NCE_SERVERS": [
+	"22.242.13.121",
+	"22.242.13.122"
+	],
+    "NCW_SERVERS": [
+	"22.242.13.121",
+	"22.242.13.122"    
+    ],  
+	"DIRECTORY": "/data/apps/css-core/corerec"
+
+}
