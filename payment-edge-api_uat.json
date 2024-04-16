@@ -1,0 +1,24 @@
+{
+	"NCE_SERVERS": [
+	"22.242.12.157",
+	"22.242.12.162"
+    ],
+    "NCW_SERVERS": [
+	"22.242.12.157",
+	"22.242.12.162"
+    ],
+	"ADMIN_NCE_SERVERS": [
+	"22.242.12.162"
+    ],
+	"ADMIN_NCW_SERVERS": [
+	"22.242.12.162"
+    ],
+	"APP":[
+		"payment-edge-api",
+		"services-server-gateway",
+		"services-server-eureka"
+	],
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
