@@ -361,15 +361,15 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 	else if(application =='payment-edge-api'){
 		def paymentEdgeApiCounter 
 		for(s in server) {
-			if(s == '22.240.20.7'||s == '22.242.20.13'){
+			if(s == '22.240.20.7'||s == '22.240.20.13'){
 			paymentEdgeApiCounter = 0
 			println s + " count: " + paymentEdgeApiCounter
 			}
-			else if(s =='22.240.20.8'||s == '22.242.20.12'){
+			else if(s =='22.240.20.8'||s == '22.240.20.12'){
 			paymentEdgeApiCounter = 1
 			println s + " count: " + paymentEdgeApiCounter
 			}
-			else if(s =='22.240.20.6'||s == '22.242.20.11'){
+			else if(s =='22.240.20.6'||s == '22.240.20.11'){
 			paymentEdgeApiCounter = 2
 			println s + " count: " + paymentEdgeApiCounter
 			}
