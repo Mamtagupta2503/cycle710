@@ -23,7 +23,7 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application payment-edge-api"
-                                def serverdetails = readJSON file: 'Patching_cycle_07_10/testDataFiles/payment-edge-api_uat.json'
+                                def serverdetails = readJSON file: 'payment-edge-api_uat.json'
 								def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def nceAdminServer = serverdetails.ADMIN_NCE_SERVERS
@@ -126,7 +126,7 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application c3po"
-                                def serverdetails = readJSON file: 'Patching_cycle_07_10/testDataFiles/c3po_uat.json'
+                                def serverdetails = readJSON file: 'c3po_uat.json'
 								def nceServer = serverdetails.APP_NCE_SERVERS
                                 def ncwServer = serverdetails.APP_NCW_SERVERS
 								def kznceServer= serverdetails.KAFKA_ZK_NCE_SERVERS
@@ -248,7 +248,7 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application core"
-                                def serverdetails = readJSON file: 'Patching_cycle_07_10/testDataFiles/core_uat.json'
+                                def serverdetails = readJSON file: 'core_uat.json'
                                 def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
@@ -367,9 +367,6 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 			}
 			else if(s =='22.242.12.162'){
 			paymentEdgeApiCounter = 1
-			}
-		
-			println s + " count: " + paymentEdgeApiCounter
 			}
 			//println s + " count: " + paymentEdgeApiCounter
 			def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
