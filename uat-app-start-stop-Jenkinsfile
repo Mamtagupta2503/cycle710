@@ -298,11 +298,11 @@ pipeline {
 									startstopelasticsearch(server,action) 
 								}
 								def result ='Success'
-								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
+								publishresults = publishresults + "core: " + "" + apiFromParameter + " " +result+ "\n"
 							}catch(Exception e) 
                             {
 								result ='Failed'
-								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
+								publishresults = publishresults + "core: " + "" + apiFromParameter + " " +result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
