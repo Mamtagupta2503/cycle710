@@ -22,7 +22,7 @@ pipeline {
                     steps {
                         script{
                             try{
-                                println "Performing "+ action +" on application payment-edge-api"
+                                println "Performing "+ action +" on application payment-edge-api_uat"
                                 def serverdetails = readJSON file: 'payment-edge-api.json'
 								def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
