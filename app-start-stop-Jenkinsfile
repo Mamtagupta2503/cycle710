@@ -91,16 +91,21 @@ pipeline {
 								
 								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
 								  println 'app selected from input parameter: ' + apiFromParameter
-								  appStartStop(apiFromParameter, server,action)						
+								  appStartStop(apiFromParameter, server,action)
+								  def result ='Success'								  
+								  publishresults = publishresults + " " + application+ " " + " " + apiFromParameter + result+ "\n"								  
 								}
 
 								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apiFromParameter
-								 kafkaZookeepStartStop(application,apiFromParameter,server,action) // TO-DO
+								 kafkaZookeepStartStop(application,apiFromParameter,server,action)
+								 result ='Success'
+								 publishresults = publishresults + " " + application+ " " + " " + apiFromParameter + result+ "\n"
 								  
 								}
-								def result ='Success'
-								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+								//def result ='Success'
+								
+								//publishresults = publishresults + "payment-edge-api: " + result+ "\n"
 							}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
