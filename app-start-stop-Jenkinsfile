@@ -218,7 +218,7 @@ pipeline {
 									println 'app selected from input parameter: ' + apiFromParameter
 									appStartStop(apiFromParameter, server,action)
 								}
-								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
+								else if(apiFromParameter =='kafka'||apiFromParameter =='zookeeper' ){
 									println 'app selected from input parameter: ' + apiFromParameter
 									kafkaZookeepStartStop(application,'kafka',kzserver,action)
 								}
@@ -337,19 +337,19 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 	else if(application == 'c3po'){
 		def c3poCounter
 		for(s in server) {
-			if(s =='22.240.0.210' || s == '22.242.0.159'){
+			if(s =='22.240.0.210'||s== '22.242.0.159'){
 				c3poCounter = 0
 			}
-			else if(s =='22.240.0.44'|| s =='22.242.0.19'){
+			else if(s =='22.240.0.44'||s =='22.242.0.19'){
 				c3poCounter = 1
 			}
-			else if(s=='22.240.0.29'|| s == '22.242.0.24'){
+			else if(s=='22.240.0.29'||s == '22.242.0.24'){
 				c3poCounter = 2
 			}
-			else if(s =='22.240.0.30' || s =='22.242.0.18'){
+			else if(s =='22.240.0.30'||s =='22.242.0.18'){
 				c3poCounter = 3
 			}
-			else if (s =='22.240.0.27' || s =='22.242.0.14'){
+			else if (s =='22.240.0.27'||s =='22.242.0.14'){
 				c3poCounter = 4
 			}				
 			def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
@@ -361,15 +361,15 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 	else if(application =='payment-edge-api'){
 		def paymentEdgeApiCounter 
 		for(s in server) {
-			if(s == '22.240.20.7' || s == '22.242.20.13'){
+			if(s == '22.240.20.7'||s == '22.242.20.13'){
 			paymentEdgeApiCounter = 0
 			println s + " count: " + paymentEdgeApiCounter
 			}
-			else if(s =='22.240.20.8' || s == '22.242.20.12'){
+			else if(s =='22.240.20.8'||s == '22.242.20.12'){
 			paymentEdgeApiCounter = 1
 			println s + " count: " + paymentEdgeApiCounter
 			}
-			else if(s =='22.240.20.6' || s == '22.242.20.11'){
+			else if(s =='22.240.20.6'||s == '22.242.20.11'){
 			paymentEdgeApiCounter = 2
 			println s + " count: " + paymentEdgeApiCounter
 			}
