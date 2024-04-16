@@ -52,17 +52,17 @@ pipeline {
 										println "appName from bitbucket : " + appName
 									}
 								}
-								else 
+								else // will be used if separate application is selected from Job parameter
 								{	
 									server = appServersFromParamArray
 									
 									println "server selected from job parameter: " + server
                                 }
+								//handling action for ALL application
 								if(action =='status' && application =='All' ){
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
-								def result ='Success'	
 								appStartStop('services-server-admin', adminServer,action)
 								appStartStop('services-server-config', server,action)
 								kafkaZookeepStartStop(application,'kafka',server,action)
@@ -72,57 +72,42 @@ pipeline {
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
-									publishresults = publishresults + application+"\n"
 									appStartStop('services-server-admin', adminServer,action)
-									publishresults = publishresults + "services-server-admin" + " " + result+ "\n"
 									appStartStop('services-server-config', server,action)
-									publishresults = publishresults + "services-server-config" + " " + result+ "\n"
 									kafkaZookeepStartStop(application,'kafka',server,action)
-									publishresults = publishresults + "kafka" + " " + result+ "\n"
-									kafkaZookeepStartStop(application,'zookeeper',server,action)
-									publishresults = publishresults + "zookeeper" + " " + result+ "\n"									
+									kafkaZookeepStartStop(application,'zookeeper',server,action)								
 								}
 
                                 else if(action =='start' && application =='All'){
 									kafkaZookeepStartStop(application,'zookeeper',server,action)
 									sleep 60
-									publishresults = publishresults + "zookeeper" + " " + result+ "\n"	
 									kafkaZookeepStartStop(application,'kafka',server,action)
 									sleep 60
-									publishresults = publishresults + "kafka" + " " + result+ "\n"
 									appStartStop('services-server-config', server,action)
-									publishresults = publishresults + "services-server-config" + " " + result+ "\n"
 									appStartStop('services-server-admin', adminServer,action)
-									publishresults = publishresults + "services-server-admin" + " " + result+ "\n"
 									for(app in reverseApp) {
 										appStartStop(app, server,action)
-										publishresults = publishresults + " "+ app + " " + result+ "\n"
 									}
-									
 								}
-								
+								// handling action for single api
 								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
-								  println 'app selected from input parameter: ' + apiFromParameter
-								  appStartStop(apiFromParameter, server,action)
-								  result ='Success'								  
-								  publishresults = publishresults + application+ "\n" + apiFromParameter + " " + result+ "\n"								  
+									println 'app selected from input parameter: ' + apiFromParameter
+									appStartStop(apiFromParameter, server,action)	
 								}
 
 								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apiFromParameter
-								 kafkaZookeepStartStop(application,apiFromParameter,server,action)
-								 result ='Success'
-								 publishresults = publishresults + application+ "\n" + apiFromParameter + " " + result+ "\n"
-								  
+								 kafkaZookeepStartStop(application,apiFromParameter,server,action)						  
 								}
-								//def result ='Success'
-								
-								//publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+								// to publish the output, apiFromParameter will be null if action is performed for ALL
+								def result ='Success'
+								publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
+
 							}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
                                 result ='Failed'
-								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
+								publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -240,12 +225,11 @@ pipeline {
 									kafkaZookeepStartStop(application,apiFromParameter,server,action)
 								}
 								def result ='Success'
-								publishresults = publishresults + "c3po: " + result+ "\n"
-								
+								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
 							}catch(Exception e) 
                             {
                                 result ='Failed'
-								publishresults = publishresults + "c3po: " + result+ "\n"
+								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -314,11 +298,11 @@ pipeline {
 									startstopelasticsearch(server,action) 
 								}
 								def result ='Success'
-								publishresults = publishresults + "core: " + result+ "\n"
+								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
 							}catch(Exception e) 
                             {
 								result ='Failed'
-								publishresults = publishresults + "core: " + result+ "\n"
+								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
