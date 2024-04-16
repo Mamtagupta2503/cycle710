@@ -100,7 +100,7 @@ pipeline {
 								 println 'app selected from input parameter: ' + apiFromParameter
 								 kafkaZookeepStartStop(application,apiFromParameter,server,action)
 								 result ='Success'
-								 publishresults = publishresults + " " + application+ " " + " " + apiFromParameter + result+ "\n"
+								 publishresults = publishresults + application+ " app" + " " + apiFromParameter + " " + result+ "\n"
 								  
 								}
 								//def result ='Success'
