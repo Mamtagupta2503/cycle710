@@ -62,6 +62,7 @@ pipeline {
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
+								def result ='Success'	
 								appStartStop('services-server-admin', adminServer,action)
 								appStartStop('services-server-config', server,action)
 								kafkaZookeepStartStop(application,'kafka',server,action)
@@ -71,36 +72,47 @@ pipeline {
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
+									publishresults = publishresults + application+"\n"
 									appStartStop('services-server-admin', adminServer,action)
+									publishresults = publishresults + "services-server-admin" + " " + result+ "\n"
 									appStartStop('services-server-config', server,action)
+									publishresults = publishresults + "services-server-config" + " " + result+ "\n"
 									kafkaZookeepStartStop(application,'kafka',server,action)
-									kafkaZookeepStartStop(application,'zookeeper',server,action)								
+									publishresults = publishresults + "kafka" + " " + result+ "\n"
+									kafkaZookeepStartStop(application,'zookeeper',server,action)
+									publishresults = publishresults + "zookeeper" + " " + result+ "\n"									
 								}
 
                                 else if(action =='start' && application =='All'){
 									kafkaZookeepStartStop(application,'zookeeper',server,action)
 									sleep 60
+									publishresults = publishresults + "zookeeper" + " " + result+ "\n"	
 									kafkaZookeepStartStop(application,'kafka',server,action)
 									sleep 60
+									publishresults = publishresults + "kafka" + " " + result+ "\n"
 									appStartStop('services-server-config', server,action)
+									publishresults = publishresults + "services-server-config" + " " + result+ "\n"
 									appStartStop('services-server-admin', adminServer,action)
+									publishresults = publishresults + "services-server-admin" + " " + result+ "\n"
 									for(app in reverseApp) {
 										appStartStop(app, server,action)
+										publishresults = publishresults + " "+ app + " " + result+ "\n"
 									}
+									
 								}
 								
 								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
 								  println 'app selected from input parameter: ' + apiFromParameter
 								  appStartStop(apiFromParameter, server,action)
-								  def result ='Success'								  
-								  publishresults = publishresults + " " + application+ " " + " " + apiFromParameter + result+ "\n"								  
+								  result ='Success'								  
+								  publishresults = publishresults + application+ "\n" + apiFromParameter + " " + result+ "\n"								  
 								}
 
 								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apiFromParameter
 								 kafkaZookeepStartStop(application,apiFromParameter,server,action)
 								 result ='Success'
-								 publishresults = publishresults + application+ "\n" + " api-" + " " + apiFromParameter + " " + result+ "\n"
+								 publishresults = publishresults + application+ "\n" + apiFromParameter + " " + result+ "\n"
 								  
 								}
 								//def result ='Success'
