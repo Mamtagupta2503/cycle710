@@ -3,9 +3,7 @@ def action =params.Action
 def application =params.Application
 def apiFromParameter =params.api 
 def appServersFromParam = params.server
-def paymentedgeapi=''
-def core=''
-def c3po=''
+def publishresults='' 
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
@@ -101,10 +99,12 @@ pipeline {
 								 kafkaZookeepStartStop(application,apiFromParameter,server,action) // TO-DO
 								  
 								}
+								def result ='Success'
 							}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
-                                paymentedgeapi ='Failed'
+                                result ='Failed'
+								publishresults = publishresults + "payment-edge-api: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -221,11 +221,12 @@ pipeline {
 									println 'app selected from input parameter: ' + apiFromParameter
 									kafkaZookeepStartStop(application,'kafka',kzserver,action)
 								}
+								def result ='Success'
 								
 							}catch(Exception e) 
                             {
-                                println "******** ERROR ********"+e
-                                c3po ='Failed'
+                                result ='Failed'
+								publishresults = publishresults + "c3po: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -293,10 +294,11 @@ pipeline {
 								else if(apiFromParameter =='elasticsearch'){
 									startstopelasticsearch(server,action) 
 								}
+								def result ='Success'
 							}catch(Exception e) 
                             {
-                                println "******** ERROR ********"+e
-                                core ='Failed'
+								result ='Failed'
+								publishresults = publishresults + "core: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -308,15 +310,16 @@ pipeline {
 			}   
 		}        
     }
-    /*post {
+    post {
 		always {
-			sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+			println publishresults
+			/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
 			message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n paymentedgeapi: [${paymentedgeapi}] \n core: [${core}] \n c3po:[${c3po}]",
 			spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
-			spaceName: 'MamtaKT']]  
+			spaceName: 'MamtaKT']]  */
 		}
 
-	}*/
+	}
 }
 def kafkaZookeepStartStop(Object application, String appName, Object server, String action){
 	if(application =='All') {
