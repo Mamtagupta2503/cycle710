@@ -250,7 +250,7 @@ pipeline {
                     }
                     steps {
                         script{
-                            //try{
+                            try{
                                 println "Performing "+ action +" on application core"
                                 def serverdetails = readJSON file: 'core.json'
                                 def nceServer = serverdetails.NCE_SERVERS
@@ -303,7 +303,7 @@ pipeline {
 								}
 								def result ='Success'
 								publishresults = publishresults + "core: " + "" + apiFromParameter + " " +result+ "\n"
-							/* }catch(Exception e) 
+							}catch(Exception e) 
                             {
 								result ='Failed'
 								publishresults = publishresults + "core: " + "" + apiFromParameter + " " +result+ "\n"
@@ -311,7 +311,7 @@ pipeline {
 								{
                                     sh "exit 1"
                                 }
-                            } */
+                            }
                         }
                     }        
                 }				
