@@ -59,7 +59,8 @@ pipeline {
 									println "server selected from job parameter: " + server
                                 }
 								//handling action for ALL application
-								if(action =='status' && application =='All' ){
+								
+								/*if(action =='status' && application =='All' ){
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
@@ -67,8 +68,8 @@ pipeline {
 								appStartStop('services-server-config', server,action)
 								kafkaZookeepStartStop(application,'kafka',server,action)
 								kafkaZookeepStartStop(application,'zookeeper',server,action)								
-								}
-								if(action =='stop' && application =='All'){
+								}*/
+								if((action =='status' || action =='stop') && application =='All'){
 									for(app in appName) {
 										appStartStop(app, server,action)
 									}
@@ -277,12 +278,12 @@ pipeline {
 									println "api selected from job parameter: " + apiFromParameter
                                 }
 								//performing action if All is selected from Application dropdown
-								if(action =='status' && application =='All'){
+								/*if(action =='status' && application =='All'){
 									
 									startstopcore(homefolder, server,action)
 									startstopelasticsearch(server,action)		
-								}
-								else if(action =='stop' && application =='All'){
+								}*/
+								if((action =='status'||action =='stop') && application =='All'){
 									
 									startstopcore(homefolder,server,action)
 									startstopelasticsearch(server,action) 
