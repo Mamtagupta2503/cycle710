@@ -95,11 +95,11 @@ pipeline {
 									
 									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
 										println "-kafkaZookeepStartStop method--" + apiFromParameter
-										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+										kafkaZookeepStartStop(application, apiFromParameter, server,action)
 									}
 									else {
 										println "-appStartStop--" + apiFromParameter
-										appStartStop(apiFromParameter, paramServer,action)
+										appStartStop(apiFromParameter, server,action)
 									}
 								}
 								
