@@ -226,7 +226,7 @@ pipeline {
 										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
 									}
 									else {
-										println "-kafkaZookeepStartStop--" + apiFromParameter
+										println "-appStartStop--" + apiFromParameter
 										appStartStop(apiFromParameter, paramServer,action)
 									}
 								}
