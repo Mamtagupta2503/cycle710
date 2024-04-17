@@ -59,16 +59,6 @@ pipeline {
 									println "server selected from job parameter: " + server
                                 }
 								//handling action for ALL application
-								
-								/*if(action =='status' && application =='All' ){
-									for(app in appName) {
-										appStartStop(app, server,action)
-									}
-								appStartStop('services-server-admin', adminServer,action)
-								appStartStop('services-server-config', server,action)
-								kafkaZookeepStartStop(application,'kafka',server,action)
-								kafkaZookeepStartStop(application,'zookeeper',server,action)								
-								}*/
 								if((action =='status' || action =='stop') && application =='All'){
 									for(app in appName) {
 										appStartStop(app, server,action)
@@ -213,7 +203,7 @@ pipeline {
 									appStartStop('c3po', c3poServer,action)
 								}
 								
-								if(apiFromParameter =='c3po' || apiFromParameter =='services-server-gateway'){
+								/*if(apiFromParameter =='c3po' || apiFromParameter =='services-server-gateway'){
 									println 'app selected from input parameter: ' + apiFromParameter
 									appStartStop(apiFromParameter, server,action)
 								}
@@ -228,6 +218,17 @@ pipeline {
 								else if(apiFromParameter =='kafka'||apiFromParameter =='zookeeper' ){
 									println 'app selected from input parameter: ' + apiFromParameter
 									kafkaZookeepStartStop(application,apiFromParameter,server,action)
+								}*/
+								if(application =='c3po'&& (!apiFromParameter.contains("kafka")|| !apiFromParameter.contains("zookeeper"))){
+									appStartStop(apiFromParameter, paramServer,action)
+									prinltn "-appStartStop method--" + apiFromParameter
+								
+								}
+								if(application =='c3po'&& (apiFromParameter.contains("kafka")|| apiFromParameter.contains("zookeeper"))){
+									prinltn "-kafkaZookeepStartStop--" + apiFromParameter
+									kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+									
+								
 								}
 								def result ='Success'
 								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
