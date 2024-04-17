@@ -93,14 +93,8 @@
 		"22.242.0.19",
 		"22.242.0.159"
 	],
-	"APP":[
-		"services-server-gateway"
-	],
     "BACKEND": [
         "www-c3po"
     ],
-	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
-	
-	"DIRECTORY": "cd /data/apps/<service_Name>/bin"
-
+	"SOCKFILE": "/data/apps/haproxy/haproxy_sock"
 }
