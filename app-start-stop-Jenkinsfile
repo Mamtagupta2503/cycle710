@@ -81,7 +81,7 @@ pipeline {
 									}
 								}
 								// handling action for single api
-								if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
+								/*if(apiFromParameter =='payment-edge-api'|| apiFromParameter =='services-server-config' || apiFromParameter=='services-server-gateway'||apiFromParameter=='services-server-eureka' ||apiFromParameter =='services-server-admin'){
 									println 'app selected from input parameter: ' + apiFromParameter
 									appStartStop(apiFromParameter, server,action)	
 								}
@@ -89,7 +89,21 @@ pipeline {
 								else if(apiFromParameter =='kafka' ||apiFromParameter =='zookeeper' ){
 								 println 'app selected from input parameter: ' + apiFromParameter
 								 kafkaZookeepStartStop(application,apiFromParameter,server,action)						  
+								} */
+								
+								if(application =='payment-edge-api'){
+									
+									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
+										println "-kafkaZookeepStartStop method--" + apiFromParameter
+										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+									}
+									else {
+										println "-appStartStop--" + apiFromParameter
+										appStartStop(apiFromParameter, paramServer,action)
+									}
 								}
+								
+								
 								// to publish the output, apiFromParameter will be null if action is performed for ALL
 								def result ='Success'
 								publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
@@ -181,15 +195,6 @@ pipeline {
 									kafkaZookeepStartStop(application,'kafka',kzserver,action)
 									kafkaZookeepStartStop(application,'zookeeper',kzserver,action)								
 								}
-								/*if(action =='stop' && application =='All'){
-									appStartStop('c3po', c3poServer,action)
-									appStartStop('services-server-gateway', gatewayServer,action)
-									appStartStop('services-server-eureka', configeurekaserver,action)
-									appStartStop('services-server-admin', adminServer,action)
-									appStartStop('services-server-config', configeurekaserver,action)
-									kafkaZookeepStartStop(application,'kafka',kzserver,action)
-									kafkaZookeepStartStop(application,'zookeeper',kzserver,action)									
-								}*/
 
                                 else if(action =='start' && application =='All'){
 									kafkaZookeepStartStop(application,'zookeeper',kzserver,action)
@@ -203,22 +208,6 @@ pipeline {
 									appStartStop('c3po', c3poServer,action)
 								}
 								
-								/*if(apiFromParameter =='c3po' || apiFromParameter =='services-server-gateway'){
-									println 'app selected from input parameter: ' + apiFromParameter
-									appStartStop(apiFromParameter, server,action)
-								}
-								else if(apiFromParameter =='services-server-admin'){
-									println 'app selected from input parameter: ' + apiFromParameter
-									appStartStop(apiFromParameter, server,action)
-								}
-								else if(apiFromParameter =='services-server-config'|| apiFromParameter=='services-server-eureka'){
-									println 'app selected from input parameter: ' + apiFromParameter
-									appStartStop(apiFromParameter, server,action)
-								}
-								else if(apiFromParameter =='kafka'||apiFromParameter =='zookeeper' ){
-									println 'app selected from input parameter: ' + apiFromParameter
-									kafkaZookeepStartStop(application,apiFromParameter,server,action)
-								}*/
 								if(application =='c3po'){
 									
 									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
@@ -230,6 +219,7 @@ pipeline {
 										appStartStop(apiFromParameter, paramServer,action)
 									}
 								}
+								
 								def result ='Success'
 								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
 							}catch(Exception e) 
