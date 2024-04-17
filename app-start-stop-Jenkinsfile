@@ -219,16 +219,16 @@ pipeline {
 									println 'app selected from input parameter: ' + apiFromParameter
 									kafkaZookeepStartStop(application,apiFromParameter,server,action)
 								}*/
-								if(application =='c3po'&& (!apiFromParameter.contains("kafka")|| !apiFromParameter.contains("zookeeper"))){
-									appStartStop(apiFromParameter, paramServer,action)
-									println "-appStartStop method--" + apiFromParameter
-								
-								}
-								if(application =='c3po'&& (apiFromParameter.contains("kafka")|| apiFromParameter.contains("zookeeper"))){
-									println "-kafkaZookeepStartStop--" + apiFromParameter
-									kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+								if(application =='c3po'){
 									
-								
+									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
+										println "-kafkaZookeepStartStop method--" + apiFromParameter
+										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+									}
+									else {
+										println "-kafkaZookeepStartStop--" + apiFromParameter
+										appStartStop(apiFromParameter, paramServer,action)
+									}
 								}
 								def result ='Success'
 								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
