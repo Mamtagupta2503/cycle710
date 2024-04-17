@@ -245,8 +245,8 @@ pipeline {
 									startstopelasticsearch(server,action) 
 									}
                                 else if(action =='start') {
-									startstopcore(homefolder,server,action)
 									startstopelasticsearch(server,action) 
+									startstopcore(homefolder,server,action)
 									}
 								}
 								
