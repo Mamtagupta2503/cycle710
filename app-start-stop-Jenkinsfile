@@ -35,6 +35,7 @@ pipeline {
 								def server
 								def paramServer
 								def adminServer
+								def apiList
                          
                                 if(application =='All') {
 									if(datacenter =='NCE'){
@@ -51,7 +52,14 @@ pipeline {
 										println "ncw adminServer : " + adminServer
 										println "appName from bitbucket : " + appName
 									}
-									
+									if(action =='status' || action =='stop'){
+										apiList =appName
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =reverseApp
+										println apiList
+									}
 									/*if(action =='status' || action =='stop'){
 										for(app in appName) {
 											appStartStop(app, server,action)
@@ -70,9 +78,7 @@ pipeline {
 											appStartStop(app, server,action)
 										}
 									}*/
-									if(action =='status' || action =='stop'){
-										println "mamta"
-									}		
+			
 								}
 
 								else if(application =='payment-edge-api'){
