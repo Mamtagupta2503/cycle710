@@ -145,7 +145,13 @@ pipeline {
 									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
 										println action + " on " + app
 										outputArray =appStartStop(app, server,action)
-										println outputArray
+										//println outputArray
+										while(!myList.isEmpty()){
+											for(oa in outputArray)
+											{
+												println oa
+											}	
+										}
 									}
 									else if(app.contains("services-server-admin")){
 										println action + " on " + app
