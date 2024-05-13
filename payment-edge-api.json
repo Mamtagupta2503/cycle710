@@ -7,12 +7,12 @@
 	 ],
     "HA_NCE_SERVERS": [
 	"spsedgeservernce09",
-    "spsedgeservernce10",
+        "spsedgeservernce10",
 	"spsedgeservernce11"
     ],
     "HA_NCW_SERVERS": [
 	"spsedgeserverncw25",
-    "spsedgeserverncw26",
+	"spsedgeserverncw26",
 	"spsedgeserverncw27"
     ],	
 	"NCE_SERVERS": [
@@ -37,7 +37,11 @@
 	"APP":[
 		"payment-edge-api",
 		"services-server-gateway",
-		"services-server-eureka"
+		"services-server-eureka",
+		"services-server-admin",
+		"services-server-config",
+		"kafka",
+		"zookeeper"	
 	],
 	"HAZELCAST_NCE_SERVERS": [
 		"22.240.0.210",
