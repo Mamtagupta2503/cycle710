@@ -414,17 +414,16 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
 	def result =''
-	def failedArray =''
+	ArrayList failedArray = new ArrayList();
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "command $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
 		try{
 			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${a}.sh'"
 			result ='Success'
 	
 		}catch(Exception e) {
 			result ='Failure'
-			failedArray = failedArray + "failed" + " " + "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"			
+			failedArray.add("$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'")			
 			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 				sh "exit 1"
 			}
