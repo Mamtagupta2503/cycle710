@@ -62,8 +62,10 @@ pipeline {
 										println reverseApp
 									}
 									for(app in apiList) {
-										if((!app.contains("kafka")) && (!app.contains("zookeeper")))
+										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
 											println(app)
+											appStartStop(app, server,action)
+										}	
 									}	
 									
 									/*if(action =='status' || action =='stop'){
