@@ -72,7 +72,7 @@ pipeline {
 										}
 										else if(app.contains("kafka") || app.contains("zookeeper")){
 											println "if3"
-											kafkaZookeepStartStop(app, server,action)
+											kafkaZookeepStartStop(application,app,server,action)
 										}
 									}	
 									
