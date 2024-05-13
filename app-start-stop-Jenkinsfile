@@ -62,7 +62,7 @@ pipeline {
 										println reverseApp
 									}
 									for(app in apiList) {
-										if(!app.contains("kafka"))
+										if(!app.contains("kafka") || !app.contains("zookeeper"))
 											println(app)
 									}	
 									
@@ -234,7 +234,7 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application core"
-                                def serverdetails = readJSON file: 'Patching_cycle_07_10/data/core.json'
+                                def serverdetails = readJSON file: 'core.json'
                                 def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
