@@ -32,6 +32,7 @@ pipeline {
 								def appName = serverdetails.APP
 								def reverseApp = appName.reverse(); // reversing the appname to use in the start sequence
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
+								def apiFromParameterArray =Arrays.asList((apiFromParameter).split(","))
 								def server
 								def paramServer
 								def adminServer
@@ -80,11 +81,11 @@ pipeline {
 									println "server selected from job parameter: " + paramServer
 									
 									if(action =='status' || action =='stop'){
-										apiList =apiFromParameter
+										apiList =apiFromParameterArray
 										println apiList
 									}	
 									else if(action =='start'){
-										apiList =apiFromParameter.reverse()
+										apiList =apiFromParameterArray.reverse()
 										println apiList
 									}
 									for(app in apiList) {
