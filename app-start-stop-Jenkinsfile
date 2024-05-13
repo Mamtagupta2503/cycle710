@@ -63,15 +63,15 @@ pipeline {
 									}
 									for(app in apiList) {
 										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
-											println "if1"
+											println action + " on " + app
 											appStartStop(app, server,action)
 										}
 										else if(app.contains("services-server-admin")){
-											println "if2"
+											println action + " on " + app
 											appStartStop(app, adminServer,action)
 										}
 										else if(app.contains("kafka") || app.contains("zookeeper")){
-											println "if3"
+											println action + " on " + app
 											kafkaZookeepStartStop(application,app,server,action)
 										}
 									}	
