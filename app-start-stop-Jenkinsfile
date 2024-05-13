@@ -72,6 +72,7 @@ pipeline {
 									}*/
 									if(action =='status' || action =='stop'){
 										for(app in appName) {
+											println "mamta"
 											appStartStop(app, server,action)
 										}
 																		
