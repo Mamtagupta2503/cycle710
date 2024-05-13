@@ -69,7 +69,10 @@ pipeline {
 										for(app in reverseApp) {
 											appStartStop(app, server,action)
 										}
-									}*/									
+									}*/
+									if(action =='status' || action =='stop'){
+										println "mamta"
+									}		
 								}
 
 								else if(application =='payment-edge-api'){
