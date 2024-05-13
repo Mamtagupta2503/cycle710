@@ -149,7 +149,8 @@ pipeline {
 										if(!outputArray.isEmpty()){
 											for(oa in outputArray)
 											{
-												println oa +mamta
+												println oa
+												println mamta
 											}	
 										}
 									}
