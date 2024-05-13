@@ -61,6 +61,11 @@ pipeline {
 										println apiList
 										println reverseApp
 									}
+									for(app in apiList) {
+										if(!app.contains("kafka"))
+											println(app)
+									}	
+									
 									/*if(action =='status' || action =='stop'){
 										for(app in appName) {
 											appStartStop(app, server,action)
