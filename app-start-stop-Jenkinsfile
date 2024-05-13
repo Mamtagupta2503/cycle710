@@ -80,7 +80,7 @@ pipeline {
 												println "if2"
 												appStartStop(app, adminServer,action)
 											}
-											else if(app.contains( "kafka") || app.contains("zookeeper")){
+											else if(app.contains("kafka") || app.contains("zookeeper")){
 												println "if3"
 												kafkaZookeepStartStop(application,app,server,action)
 											}
