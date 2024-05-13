@@ -38,7 +38,7 @@ pipeline {
 								def adminServer
 								def apiList
                          
-                                if(application =='All') {
+                                /*if(application =='All') {
 									if(datacenter =='NCE'){
 										server = nceServer
 										adminServer = nceAdminServer
@@ -102,7 +102,58 @@ pipeline {
 											kafkaZookeepStartStop(application,app,paramServer,action)
 										}
 									}
+                                }*/
+								if(application =='All') {
+									if(datacenter =='NCE'){
+										server = nceServer
+										adminServer = nceAdminServer
+										println "nce servers are: " + server
+										println "nce adminServer : " + adminServer
+										println "appName from bitbucket : " + appName
+									}
+									else if(datacenter =='NCW'){
+										server = ncwServer
+										adminServer = ncwAdminServer
+										println "ncw servers are: " + server
+										println "ncw adminServer : " + adminServer
+										println "appName from bitbucket : " + appName
+									}
+									if(action =='status' || action =='stop'){
+										apiList =appName
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =reverseApp
+										println apiList
+									}
+								}
+								else if(application =='payment-edge-api'){
+									server = appServersFromParamArray
+									println "server selected from job parameter: " + server
+									if(action =='status' || action =='stop'){
+										apiList =apiFromParameterArray
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =apiFromParameterArray.reverse()
+										println apiList
+									}
                                 }
+								for(app in apiList) {
+									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
+										println action + " on " + app
+										appStartStop(app, server,action)
+									}
+									else if(app.contains("services-server-admin")){
+										println action + " on " + app
+										appStartStop(app, adminServer,action)
+									}
+									else if(app.contains("kafka") || app.contains("zookeeper")){
+										println action + " on " + app
+										kafkaZookeepStartStop(application,app,server,action)
+									}
+								}
+								
 								
 								// to publish the output, apiFromParameter will be null if action is performed for ALL
 								def result ='Success'
