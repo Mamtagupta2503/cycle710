@@ -70,7 +70,7 @@ pipeline {
 											println "if2"
 											appStartStop(app, adminServer,action)
 										}
-										else if(app.contains("kafka") && app.contains("zookeeper")){
+										else if(app.contains("kafka") || app.contains("zookeeper")){
 											println "if3"
 											kafkaZookeepStartStop(app, server,action)
 										}
@@ -132,7 +132,7 @@ pipeline {
 				stage('Application: c3po') {
                     when {
                         expression {
-                        'c3po' in application||'All' in application
+                        'c3po' in application||'' in application
                         }
                     }
                     steps {
@@ -237,7 +237,7 @@ pipeline {
 				stage('Application: core') {
                     when {
                         expression {
-                        'core' in application||'All' in application
+                        'core' in application||'' in application
                         }
                     }
                     steps {
