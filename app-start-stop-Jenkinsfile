@@ -8,8 +8,8 @@ def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
 pipeline {
-    //agent any
-	agent {label 'ncw'}
+    agent any
+	//agent {label 'ncw'}
 
     stages {
         stage('Parallel execution') {
