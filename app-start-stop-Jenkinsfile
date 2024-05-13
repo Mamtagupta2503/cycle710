@@ -72,14 +72,23 @@ pipeline {
 									}*/
 									if(action =='status' || action =='stop'){
 										for(app in appName) {
-											println "mamta"
-											appStartStop(app, server,action)
+											if(app !='services-server-admin' || app != 'kafka' || app !='zookeeper')
+												appStartStop(app, server,action)
+											else if(app =='services-server-admin')
+												appStartStop(app, adminServer,action)
+											else if(app == 'kafka' || app =='zookeeper')
+												kafkaZookeepStartStop(application,app,server,action)
 										}
 																		
 									}
 									else if(action =='start'){
 										for(app in reverseApp) {
-											appStartStop(app, server,action)
+											if(app !='services-server-admin' || app != 'kafka' || app !='zookeeper')
+												appStartStop(app, server,action)
+											else if(app =='services-server-admin')
+												appStartStop(app, adminServer,action)
+											else if(app == 'kafka' || app =='zookeeper')
+												kafkaZookeepStartStop(application,app,server,action)
 										}
 									}
 									
