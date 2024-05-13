@@ -146,7 +146,7 @@ pipeline {
 										println action + " on " + app
 										outputArray =appStartStop(app, server,action)
 										//println outputArray
-										while(!outputArray.isEmpty()){
+										if(!outputArray.isEmpty()){
 											for(oa in outputArray)
 											{
 												println oa
