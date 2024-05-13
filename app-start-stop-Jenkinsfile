@@ -424,7 +424,7 @@ def appStartStop(String appName, Object server, String action){
 	
 		}catch(Exception e) {
 			result ='Failure'
-			failedArray = failedArray + "failed" + " " + $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'			
+			failedArray = failedArray + "failed" + " " + "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"			
 			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 				sh "exit 1"
 			}
