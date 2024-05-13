@@ -62,7 +62,7 @@ pipeline {
 										println reverseApp
 									}
 									for(app in apiList) {
-										if(!app.contains("kafka") || !app.contains("zookeeper"))
+										if((!app.contains("kafka")) || (!app.contains("zookeeper")))
 											println(app)
 									}	
 									
