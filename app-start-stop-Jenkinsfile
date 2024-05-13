@@ -59,7 +59,6 @@ pipeline {
 									else if(action =='start'){
 										apiList =reverseApp
 										println apiList
-										println reverseApp
 									}
 									for(app in apiList) {
 										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
@@ -74,41 +73,33 @@ pipeline {
 											println action + " on " + app
 											kafkaZookeepStartStop(application,app,server,action)
 										}
-									}	
-									
-									/*if(action =='status' || action =='stop'){
-										for(app in appName) {
-											appStartStop(app, server,action)
-										}
-										appStartStop('services-server-admin', adminServer,action)
-										appStartStop('services-server-config', server,action)
-										kafkaZookeepStartStop(application,'kafka',server,action)
-										kafkaZookeepStartStop(application,'zookeeper',server,action)								
 									}
-									else if(action =='start'){
-										kafkaZookeepStartStop(application,'zookeeper',server,action)
-										kafkaZookeepStartStop(application,'kafka',server,action)
-										appStartStop('services-server-config', server,action)
-										appStartStop('services-server-admin', adminServer,action)
-										for(app in reverseApp) {
-											appStartStop(app, server,action)
-										}
-									}*/
-			
 								}
-
 								else if(application =='payment-edge-api'){
-									
 									paramServer = appServersFromParamArray
 									println "server selected from job parameter: " + paramServer
 									
-									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
-										println "-kafkaZookeepStartStop method--" + apiFromParameter
-										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
+									if(action =='status' || action =='stop'){
+										apiList =apiFromParameter
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =apiFromParameter.reverse()
+										println apiList
 									}
-									else {
-										println "-appStartStop--" + apiFromParameter
-										appStartStop(apiFromParameter, paramServer,action)
+									for(app in apiList) {
+										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
+											println action + " on " + app
+											appStartStop(app, server,action)
+										}
+										else if(app.contains("services-server-admin")){
+											println action + " on " + app
+											appStartStop(app, adminServer,action)
+										}
+										else if(app.contains("kafka") || app.contains("zookeeper")){
+											println action + " on " + app
+											kafkaZookeepStartStop(application,app,server,action)
+										}
 									}
                                 }
 								
