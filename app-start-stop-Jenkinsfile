@@ -72,12 +72,18 @@ pipeline {
 									}*/
 									if(action =='status' || action =='stop'){
 										for(app in appName) {
-											if(app !='services-server-admin' || app != 'kafka' || app !='zookeeper')
+											if(app !='services-server-admin' || app != 'kafka' || app !='zookeeper'){
+												println " if1"
 												appStartStop(app, server,action)
-											else if(app =='services-server-admin')
+											}
+											else if(app =='services-server-admin'){
+												println "if2"
 												appStartStop(app, adminServer,action)
-											else if(app == 'kafka' || app =='zookeeper')
+											}
+											else if(app == 'kafka' || app =='zookeeper'){
+												println "if3"
 												kafkaZookeepStartStop(application,app,server,action)
+											}
 										}
 																		
 									}
