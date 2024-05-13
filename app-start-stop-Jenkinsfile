@@ -145,10 +145,7 @@ pipeline {
 									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
 										println action + " on " + app
 										outputArray =appStartStop(app, server,action)
-										if(outputArray.contains('Failure'){
-											println outputArray
-											//retry(outputArray)
-										}
+										println outputArray
 									}
 									else if(app.contains("services-server-admin")){
 										println action + " on " + app
@@ -433,6 +430,7 @@ def appStartStop(String appName, Object server, String action){
 			}
 		}	
 	}
+	return failedArray
 }
 def startstopelasticsearch(Object server,String action){
 	for(s in server) {
