@@ -72,7 +72,7 @@ pipeline {
 									}*/
 									if(action =='status' || action =='stop'){
 										for(app in appName) {
-											if(app !='services-server-admin' || app != 'kafka' || app !='zookeeper'){
+											if(app !="services-server-admin" || app != "kafka" || app !="zookeeper"){
 												println " if1"
 												appStartStop(app, server,action)
 											}
