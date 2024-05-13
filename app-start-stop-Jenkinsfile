@@ -37,6 +37,7 @@ pipeline {
 								def paramServer
 								def adminServer
 								def apiList
+								def outputArray
                          
                                 /*if(application =='All') {
 									if(datacenter =='NCE'){
@@ -139,18 +140,23 @@ pipeline {
 										println apiList
 									}
                                 }
+								// action starts here
 								for(app in apiList) {
 									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
 										println action + " on " + app
-										appStartStop(app, server,action)
+										outputArray =appStartStop(app, server,action)
+										if(outputArray.contains('Failure'){
+											println outputArray
+											//retry(outputArray)
+										}
 									}
 									else if(app.contains("services-server-admin")){
 										println action + " on " + app
-										appStartStop(app, adminServer,action)
+										outputArray =appStartStop(app, adminServer,action)
 									}
 									else if(app.contains("kafka") || app.contains("zookeeper")){
 										println action + " on " + app
-										kafkaZookeepStartStop(application,app,server,action)
+										outputArray =kafkaZookeepStartStop(application,app,server,action)
 									}
 								}
 								
@@ -411,11 +417,21 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
 	def result =''
+	def failedArray =''
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "command $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'" 
-		//sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
-		
+		echo "command $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
+		try{
+			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${a}.sh'"
+			result ='Success'
+	
+		}catch(Exception e) {
+			result ='Failure'
+			failedArray = failedArray + "failed" + " " + $SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'			
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+				sh "exit 1"
+			}
+		}	
 	}
 }
 def startstopelasticsearch(Object server,String action){
