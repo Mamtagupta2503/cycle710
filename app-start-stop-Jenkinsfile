@@ -52,7 +52,7 @@ pipeline {
 										println "appName from bitbucket : " + appName
 									}
 									
-									if(action =='status' || action =='stop'){
+									/*if(action =='status' || action =='stop'){
 										for(app in appName) {
 											appStartStop(app, server,action)
 										}
@@ -69,7 +69,19 @@ pipeline {
 										for(app in reverseApp) {
 											appStartStop(app, server,action)
 										}
+									}*/
+									if(action =='status' || action =='stop'){
+										for(app in appName) {
+											appStartStop(app, server,action)
+										}
+																		
 									}
+									else if(action =='start'){
+										for(app in reverseApp) {
+											appStartStop(app, server,action)
+										}
+									}
+									
 								}
 
 								else if(application =='payment-edge-api'){
