@@ -87,33 +87,61 @@ pipeline {
 									println "---after split:--"+ listWithoutend
 									HashMap<String, ArrayList> apiServerMap = new HashMap<>();
 									
-									for(ls in listWithoutend) {
-										if(!ls.equals(""))
-										{
-											def apiData = ls.split(",");
-											println "api with server-- "+apiData
-											def api= apiData[0]
-											ArrayList ServerList = new ArrayList();
-											for(int i =1; i< apiData.size(); i++){
-												ServerList.add(apiData[i])	
+									if(action =='status' || action =='stop'){
+										for(ls in listWithoutend) {
+											if(!ls.equals("")){
+												def apiData = ls.split(",");
+												println "api with server-- "+apiData
+												def api= apiData[0]
+												ArrayList ServerList = new ArrayList();
+												for(int i =1; i< apiData.size(); i++){
+													ServerList.add(apiData[i])	
+												}
+												if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
+													outputArray =appStartStop(api, ServerList,action)
+													//println outputArray
+												}
+												else if(api.contains("kafka") || api.contains("zookeeper")){
+													println action + " on " + api
+													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
+												}
+												/*if(!outputArray.isEmpty()){
+													for(oa in outputArray)
+													{
+														println "mamta"
+													}	
+												}*/
 											}
-											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
-												outputArray =appStartStop(api, ServerList,action)
-												//println outputArray
-											}
-											else if(api.contains("kafka") || api.contains("zookeeper")){
-												println action + " on " + api
-												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
-											}
-											/*if(!outputArray.isEmpty()){
-												for(oa in outputArray)
-												{
-													println "mamta"
-												}	
-											}*/
 										}
 									}
-                                }
+									else if(action =='start'){	
+										for(int ls =0; ls< listWithoutend.size(); ls--){
+											if(!ls.equals("")){
+												def apiData = ls.split(",");
+												println "api with server-- "+apiData
+												def api= apiData[0]
+												ArrayList ServerList = new ArrayList();
+												for(int i =1; i< apiData.size(); i++){
+													ServerList.add(apiData[i])	
+												}
+												if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
+													outputArray =appStartStop(api, ServerList,action)
+													//println outputArray
+												}
+												else if(api.contains("kafka") || api.contains("zookeeper")){
+													println action + " on " + api
+													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
+												}
+												/*if(!outputArray.isEmpty()){
+													for(oa in outputArray)
+													{
+														println "mamta"
+													}	
+												}*/
+											}
+										}	
+									}
+								}
 
 							}catch(Exception e) 
                             {
