@@ -98,7 +98,7 @@ pipeline {
 												ServerList.add(apiData[i])	
 											}
 											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
-												if(!api.equals("")){
+												if(!api.equals("") || api ==null){
 													outputArray =appStartStop(api, ServerList,action)
 												}
 												else 
