@@ -94,24 +94,23 @@ pipeline {
 											println "after removing comma-- "+apiData
 											def api= apiData[0]
 											ArrayList ServerList = new ArrayList();
-											for(int i =1; i< apiData.size(); i++)
-											{
-												ServerList.add(apiData[i])
-												if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
-													println action + " on " + api
-													outputArray =appStartStop(api, ServerList,action)
-													//println outputArray
-													if(!outputArray.isEmpty()){
-														for(oa in outputArray)
-														{
-															println "mamta"
-														}	
-													}
+											for(int i =1; i< apiData.size(); i++){
+												ServerList.add(apiData[i])	
+											}
+											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
+												println action + " on " + api
+												outputArray =appStartStop(api, ServerList,action)
+												//println outputArray
+												if(!outputArray.isEmpty()){
+													for(oa in outputArray)
+													{
+														println "mamta"
+													}	
 												}
-												else if(api.contains("kafka") || api.contains("zookeeper")){
-													println action + " on " + api
-													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
-												}	
+											}
+											else if(api.contains("kafka") || api.contains("zookeeper")){
+												println action + " on " + api
+												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 											}
 											//apiServerMap.put(api,ServerList)
 										}
