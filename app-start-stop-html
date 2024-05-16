@@ -112,7 +112,7 @@ pipeline {
 												}
 												else if(api.contains("kafka") || api.contains("zookeeper")){
 													println action + " on " + api
-													outputArray =kafkaZookeepStartStop(application,api,server,action)
+													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 												}	
 											}
 											//apiServerMap.put(api,ServerList)
