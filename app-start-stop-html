@@ -98,14 +98,7 @@ pipeline {
 												ServerList.add(apiData[i])	
 											}
 											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
-												println "api: " +api
-												if(!api.equals("") || api ==null){
-													outputArray =appStartStop(api, ServerList,action)
-												}
-												else if(api.equals("") || api ==null)
-												{
-													println "api not selected from parameter"
-												}	
+												outputArray =appStartStop(api, ServerList,action)
 												//println outputArray
 												if(!outputArray.isEmpty()){
 													for(oa in outputArray)
@@ -116,13 +109,7 @@ pipeline {
 											}
 											else if(api.contains("kafka") || api.contains("zookeeper")){
 												println action + " on " + api
-												if(!api.equals("")){
-													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
-												}
-												else 
-												{
-													println "api not selected from parameter"
-												}	
+												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 											}
 											//apiServerMap.put(api,ServerList)
 										}
