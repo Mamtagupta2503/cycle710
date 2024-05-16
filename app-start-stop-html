@@ -97,7 +97,8 @@ pipeline {
 											for(int i =1; i< apiData.size(); i++){
 												ServerList.add(apiData[i])	
 											}
-											if((!api.contains("")) && (!api.contains("kafka")) && (!api.contains("zookeeper"))){
+											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
+												if(!api.equals(""))
 												outputArray =appStartStop(api, ServerList,action)
 												//println outputArray
 												if(!outputArray.isEmpty()){
@@ -107,8 +108,9 @@ pipeline {
 													}	
 												}
 											}
-											else if((!api.contains("")) && ((api.contains("kafka")) || (api.contains("zookeeper")))){
+											else if(api.contains("kafka") || api.contains("zookeeper")){
 												println action + " on " + api
+												if(!api.equals(""))
 												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 											}
 											//apiServerMap.put(api,ServerList)
