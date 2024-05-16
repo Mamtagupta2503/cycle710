@@ -91,14 +91,13 @@ pipeline {
 										if(!ls.equals(""))
 										{
 											def apiData = ls.split(",");
-											println "after removing comma-- "+apiData
+											println "api with server-- "+apiData
 											def api= apiData[0]
 											ArrayList ServerList = new ArrayList();
 											for(int i =1; i< apiData.size(); i++){
 												ServerList.add(apiData[i])	
 											}
 											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
-												println action + " on " + api
 												outputArray =appStartStop(api, ServerList,action)
 												//println outputArray
 												if(!outputArray.isEmpty()){
@@ -217,8 +216,6 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 }
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
-	println appName
-	println server
 	def result =''
 	ArrayList failedArray = new ArrayList();
 	for(s in server) {
