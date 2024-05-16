@@ -20,7 +20,7 @@ pipeline {
                     }
                     steps {
                         script{
-                            //try{
+                            try{
                                 println "Performing "+ action +" on application payment-edge-api"
                                 def serverdetails = readJSON file: 'payment-edge-api.json'
 								def nceServer = serverdetails.NCE_SERVERS
@@ -100,42 +100,22 @@ pipeline {
 											if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
 												outputArray =appStartStop(api, ServerList,action)
 												//println outputArray
-												if(!outputArray.isEmpty()){
-													for(oa in outputArray)
-													{
-														println "mamta"
-													}	
-												}
 											}
 											else if(api.contains("kafka") || api.contains("zookeeper")){
 												println action + " on " + api
 												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 											}
-											//apiServerMap.put(api,ServerList)
+											if(!outputArray.isEmpty()){
+												for(oa in outputArray)
+												{
+													println "mamta"
+												}	
+											}
 										}
 									}
-									
-									
-									/*
-									server = appServersFromParamArray
-									println "server selected from job parameter: " + server
-									if(action =='status' || action =='stop'){
-										apiList =apiFromParameterArray
-										println apiList
-									}	
-									else if(action =='start'){
-										apiList =apiFromParameterArray.reverse()
-										println apiList
-									}*/
                                 }
-								// action starts here
-								
-								
-								// to publish the output, apiFromParameter will be null if action is performed for ALL
-								//def result ='Success'
-								//publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
 
-							/*}catch(Exception e) 
+							}catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
                                 result ='Failed'
@@ -144,7 +124,7 @@ pipeline {
 								{
                                     sh "exit 1"
                                 }
-                            }*/
+                            }
                         }
                     }        
                 }				
@@ -248,4 +228,4 @@ def startstopcore(String home_folder, Object server,String action){
 		//sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
 		
 	}
-}	
+}
