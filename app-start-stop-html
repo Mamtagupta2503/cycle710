@@ -105,12 +105,12 @@ pipeline {
 												println action + " on " + api
 												outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
 											}
-											if(!outputArray.isEmpty()){
+											/*if(!outputArray.isEmpty()){
 												for(oa in outputArray)
 												{
 													println "mamta"
 												}	
-											}
+											}*/
 										}
 									}
                                 }
@@ -228,4 +228,4 @@ def startstopcore(String home_folder, Object server,String action){
 		//sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
 		
 	}
-}	
+}
