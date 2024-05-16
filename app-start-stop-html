@@ -220,6 +220,7 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 }
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
+	println "inside appStartStop"
 	def result =''
 	ArrayList failedArray = new ArrayList();
 	for(s in server) {
