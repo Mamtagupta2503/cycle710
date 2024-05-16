@@ -97,7 +97,7 @@ pipeline {
 											for(int i =1; i< apiData.size(); i++){
 												ServerList.add(apiData[i])	
 											}
-											if((!api.contains("")) &&!api.contains("kafka")) && (!api.contains("zookeeper"))){
+											if((!api.contains("")) &&(!api.contains("kafka")) && (!api.contains("zookeeper"))){
 												outputArray =appStartStop(api, ServerList,action)
 												//println outputArray
 												if(!outputArray.isEmpty()){
