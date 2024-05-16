@@ -91,14 +91,12 @@ pipeline {
 										if(!ls.equals(""))
 										{
 											def apiData = ls.split(",");
-											println "apiData-- "+apiData
+											println "after removing comma-- "+apiData
 											def api= apiData[0]
 											ArrayList ServerList = new ArrayList();
 											for(int i =1; i< apiData.size(); i++)
 											{
 												ServerList.add(apiData[i])
-												println "api-- " + api
-												println "serverList-- "+ServerList
 												if((!api.contains("kafka")) && (!api.contains("zookeeper"))){
 													println action + " on " + api
 													outputArray =appStartStop(api, ServerList,action)
@@ -220,14 +218,12 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 }
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
-	println "inside appStartStop"
+	println appName
+	println server
 	def result =''
 	ArrayList failedArray = new ArrayList();
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		println SSH_OPTION
-		println appName
-		println action
 		try{
 			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
 			result ='Success'
