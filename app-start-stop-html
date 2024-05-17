@@ -114,8 +114,8 @@ pipeline {
 											}
 										}
 									}
-									else if(action =='start'){	
-										for(int ls =0; ls< listWithoutend.size(); ls--){
+									else if(action =='start'){
+										for (int ls = listWithoutend.size() - 1; ls >= 0; ls--)
 											if(!ls.equals("")){
 												def apiData = ls.split(",");
 												println "api with server-- "+apiData
