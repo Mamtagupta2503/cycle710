@@ -116,9 +116,9 @@ pipeline {
 									}
 									else if(action =='start'){
 										for (int ls = listWithoutend.size() - 1; ls >= 0; ls--){
-											if(!ls.equals("")){
+											if(!listWithoutend[ls].equals("")){
 												println "---" + listWithoutend[ls]
-												/*def apiData = listWithoutend[ls].split(",");
+												def apiData = listWithoutend[ls].split(",");
 												println "api with server-- "+apiData
 												def api= apiData[0]
 												ArrayList ServerList = new ArrayList();
@@ -132,7 +132,7 @@ pipeline {
 												else if(api.contains("kafka") || api.contains("zookeeper")){
 													println action + " on " + api
 													outputArray =kafkaZookeepStartStop(application,api,ServerList,action)
-												}*/
+												}
 												/*if(!outputArray.isEmpty()){
 													for(oa in outputArray)
 													{
