@@ -117,8 +117,8 @@ pipeline {
 									else if(action =='start'){
 										for (int ls = listWithoutend.size() - 1; ls >= 0; ls--){
 											if(!ls.equals("")){
-												println "---" + ls
-												/*def apiData = ls.split(",");
+												println "---" + listWithoutend[ls]
+												/*def apiData = listWithoutend[ls].split(",");
 												println "api with server-- "+apiData
 												def api= apiData[0]
 												ArrayList ServerList = new ArrayList();
