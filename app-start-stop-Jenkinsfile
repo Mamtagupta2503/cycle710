@@ -262,10 +262,10 @@ pipeline {
 											println action + " on " + app
 											failedData =appStartStop(app, c3poServer,action)
 											//println failedData
-											if(failedData!=null){
+											if(failedData!=null || failedData!= ''){
 												for(fd in failedData)
 												{
-													println "inside failed data tp retry"	
+													println "inside failed data to retry"	
 													println fd
 													//ssh fd
 												}	
