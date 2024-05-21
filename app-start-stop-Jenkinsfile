@@ -105,8 +105,8 @@ pipeline {
 										}
 									}
                                 }*/
-								if(application =='All' || (application =='payment-edge-api' && apiFromParameterArray =='All')) {
-									println "-mamta-" +apiFromParameterArray
+								if(application =='All' || (application =='payment-edge-api' && (!apiFromParameterArray.contains("All")))) {
+									println "mamta" + apiFromParameterArray
 									if(datacenter =='NCE'){
 										server = nceServer
 										adminServer = nceAdminServer
@@ -130,7 +130,7 @@ pipeline {
 										println apiList
 									}
 								}
-								else if(application =='payment-edge-api' && apiFromParameterArray != 'All'){
+								else if(application =='payment-edge-api' && (!apiFromParameterArray.contains("All"))){
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
 									if(action =='status' || action =='stop'){
