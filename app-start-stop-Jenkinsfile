@@ -149,17 +149,20 @@ pipeline {
 								def nceAdminServer = serverdetails.ADMIN_NCE_SERVERS
                                 def ncwAdminServer = serverdetails.ADMIN_NCW_SERVERS
 								def nceConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCE_SERVERS
-								def ncwConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCW_SERVERS				
+								def ncwConfigEurekaServer = serverdetails.CONFIG_EUREKA_NCW_SERVERS
+								def appName = serverdetails.APP
+								def reverseApp = appName.reverse(); // reversing the appname to use in the start sequence								
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
-								
+								def apiFromParameterArray =Arrays.asList((apiFromParameter).split(","))
 								def paramServer
 								def adminServer
 								def kzserver
 								def configeurekaserver
 								def gatewayServer
 								def c3poServer
-                         
-                                if(application =='All') {
+								def apiList
+								def failedData
+                                /*if(application =='All') {
 									if(datacenter =='NCE'){
 										c3poServer = c3poNceServer
 										gatewayServer = GatewayNceServer
@@ -217,6 +220,153 @@ pipeline {
 									else {
 										println "-appStartStop--" + apiFromParameter
 										appStartStop(apiFromParameter, paramServer,action)
+									}
+								}*/
+								
+								if(application =='All' || (application =='c3po' && (apiFromParameterArray.contains("All")))) {
+									println "mamta" + apiFromParameterArray
+									if(datacenter =='NCE'){
+										c3poServer = c3poNceServer
+										gatewayServer = GatewayNceServer
+										adminServer = nceAdminServer
+										kzserver = kznceServer
+										configeurekaserver =nceConfigEurekaServer
+										println "nce c3po servers: " + c3poServer
+										println "nce gateway servers: " + gatewayServer
+										println "nce adminServer : " + adminServer
+										println "nce kafka/zookeeper servers: " + kznceServer
+										println "nce eureka config server : " + nceConfigEurekaServer
+									}
+									else if(datacenter =='NCW'){
+										c3poServer = c3poNcwServer
+										gatewayServer = GatewayNcwServer
+										adminServer = ncwAdminServer
+										kzserver =kzncwServer
+										configeurekaserver=ncwConfigEurekaServer
+										println "ncw c3po servers: " + c3poServer
+										println "ncw gateway servers: " + gatewayServer
+										println "ncw adminServer : " + adminServer
+										println "ncw kafka/zookeeper servers: " + kzncwServer
+										println "ncw eureka config server : " + ncwConfigEurekaServer
+									}
+									if(action =='status' || action =='stop'){
+										apiList =appName
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =reverseApp
+										println apiList
+									}
+									for(app in apiList) {
+										if(app.contains("c3po")) {
+											println action + " on " + app
+											failedData =appStartStop(app, c3poServer,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
+										}
+										if(app.contains("services-server-gateway")) {
+											println action + " on " + app
+											failedData =appStartStop(app, gatewayServer,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
+										}
+										if(app.contains("services-server-config") || app.contains("services-server-eureka")) {
+											println action + " on " + app
+											failedData =appStartStop(app, configeurekaserver,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
+										}
+										if(app.contains("services-server-admin")) {
+											println action + " on " + app
+											failedData =appStartStop(app, adminServer,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
+										}
+										if(app.contains("kafka")||app.contains("zookeeper")) {
+											println action + " on " + app
+											failedData =appStartStop(app, kznceServer,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
+										}	
+									}
+								}
+								else if(application =='c3po' && (!apiFromParameterArray.contains("All"))){
+									server = appServersFromParamArray
+									println "server selected from job parameter: " + server
+									if(action =='status' || action =='stop'){
+										apiList =apiFromParameterArray
+										println apiList
+									}	
+									else if(action =='start'){
+										apiList =apiFromParameterArray.reverse()
+										println apiList
+									}
+                                }
+								// action starts here
+								for(app in apiList) {
+									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
+										println action + " on " + app
+										failedData =appStartStop(app, server,action)
+										//println failedData
+										if(failedData!=null){
+											for(fd in failedData)
+											{
+												println fd
+												//ssh fd
+											}	
+										}
+									}
+									else if(app.contains("services-server-admin")){
+										println action + " on " + app
+										failedData =appStartStop(app, adminServer,action)
+										if(failedData!=null){
+											for(fd in failedData)
+											{
+												//ssh fd
+												println fd
+											}	
+										}
+									}
+									else if(app.contains("kafka") || app.contains("zookeeper")){
+										println action + " on " + app
+										failedData =kafkaZookeepStartStop(application,app,server,action)
+										if(failedData!=null){
+											for(fd in failedData)
+											{
+												println fd
+												//ssh fd
+											}	
+										}
 									}
 								}
 								
@@ -400,3 +550,4 @@ def startstopcore(String home_folder, Object server,String action){
 		
 	}
 }	
+	
