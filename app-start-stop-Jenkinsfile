@@ -162,67 +162,7 @@ pipeline {
 								def c3poServer
 								def apiList
 								def failedData
-                                /*if(application =='All') {
-									if(datacenter =='NCE'){
-										c3poServer = c3poNceServer
-										gatewayServer = GatewayNceServer
-										adminServer = nceAdminServer
-										kzserver = kznceServer
-										configeurekaserver =nceConfigEurekaServer
-										println "nce c3po servers: " + c3poServer
-										println "nce gateway servers: " + gatewayServer
-										println "nce adminServer : " + adminServer
-										println "nce kafka/zookeeper servers: " + kznceServer
-										println "nce eureka config server : " + nceConfigEurekaServer
-									}
-									else if(datacenter =='NCW'){
-										c3poServer = c3poNcwServer
-										gatewayServer = GatewayNcwServer
-										adminServer = ncwAdminServer
-										kzserver =kzncwServer
-										configeurekaserver=ncwConfigEurekaServer
-										println "ncw c3po servers: " + c3poServer
-										println "ncw gateway servers: " + gatewayServer
-										println "ncw adminServer : " + adminServer
-										println "ncw kafka/zookeeper servers: " + kzncwServer
-										println "ncw eureka config server : " + ncwConfigEurekaServer
-									}
-									
-									if(action =='status' || action =='stop'){
-										appStartStop('c3po', c3poServer,action)
-										appStartStop('services-server-gateway', gatewayServer,action)
-										appStartStop('services-server-eureka', configeurekaserver,action)
-										appStartStop('services-server-admin', adminServer,action)
-										appStartStop('services-server-config', configeurekaserver,action)
-										kafkaZookeepStartStop(application,'kafka',kzserver,action)
-										kafkaZookeepStartStop(application,'zookeeper',kzserver,action)								
-									}
-
-									else if(action =='start'){
-										kafkaZookeepStartStop(application,'zookeeper',kzserver,action)
-										kafkaZookeepStartStop(application,'kafka',kzserver,action)
-										appStartStop('services-server-config', configeurekaserver,action)
-										appStartStop('services-server-admin', adminServer,action)
-										appStartStop('services-server-eureka', configeurekaserver,action)
-										appStartStop('services-server-gateway', gatewayServer,action)
-										appStartStop('c3po', c3poServer,action)
-									}
-								}
-								else if(application =='c3po'){
-									paramServer = appServersFromParamArray
-									println "server selected from job parameter: " + paramServer
-									println "api selected from job parameter: " + apiFromParameter
-									
-									if(apiFromParameter =='kafka' || apiFromParameter =='zookeeper'){
-										println "-kafkaZookeepStartStop method--" + apiFromParameter
-										kafkaZookeepStartStop(application, apiFromParameter, paramServer,action)
-									}
-									else {
-										println "-appStartStop--" + apiFromParameter
-										appStartStop(apiFromParameter, paramServer,action)
-									}
-								}*/
-								
+                         		
 								if(application =='All' || (application =='c3po' && (apiFromParameterArray.contains("All")))) {
 									println "mamta" + apiFromParameterArray
 									if(datacenter =='NCE'){
