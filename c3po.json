@@ -26,7 +26,7 @@
 		"c3poprodserverncw_vm03"
     ],
 "APP":[
-		"payment-edge-api",
+		"c3po",
 		"services-server-gateway",
 		"services-server-eureka",
 		"services-server-admin",
