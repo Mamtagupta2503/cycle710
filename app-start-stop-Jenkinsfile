@@ -129,7 +129,7 @@ pipeline {
 										println apiList
 									}
 								}
-								else if(application =='payment-edge-api'){
+								else if(application =='payment-edge-api' && apiFromParameterArray != 'All'){
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
 									if(action =='status' || action =='stop'){
