@@ -265,7 +265,6 @@ pipeline {
 											if(failedData!=null){
 												for(fd in failedData)
 												{
-													println "inside failed data to retry"	
 													println fd
 													//ssh fd
 												}	
@@ -391,7 +390,7 @@ pipeline {
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
 								def server
                          
-                                if(application =='All') {
+                                if(application =='All'(apiFromParameterArray.contains("All"))) {
 									if(datacenter =='NCE'){
 										server = nceServer
 										println "nce servers are: " + server
@@ -411,7 +410,7 @@ pipeline {
 									}
 								}
 								
-								else if(application =='core') {	
+								else if(application =='core'(!apiFromParameterArray.contains("All"))) {	
 									server = appServersFromParamArray
 									println "server selected from job parameter: " + server
 									println "api selected from job parameter: " + apiFromParameter
