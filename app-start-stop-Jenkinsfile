@@ -308,7 +308,7 @@ pipeline {
 										}
 										if(app.contains("kafka")||app.contains("zookeeper")) {
 											println action + " on " + app
-											failedData =kafkaZookeepStartStop(app, kznceServer,action)
+											failedData =kafkaZookeepStartStop(application,app, kznceServer,action)
 											//println failedData
 											if(failedData!=null){
 												for(fd in failedData)
