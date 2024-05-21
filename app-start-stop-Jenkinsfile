@@ -23,7 +23,7 @@ pipeline {
                     }
                     steps {
                         script{
-                            //try{
+                            try{
                                 println "Performing "+ action +" on application payment-edge-api"
                                 def serverdetails = readJSON file: 'payment-edge-api.json'
 								def nceServer = serverdetails.NCE_SERVERS
@@ -38,73 +38,8 @@ pipeline {
 								def paramServer
 								def adminServer
 								def apiList
-								def outputArray
+								def failedData
                          
-                                /*if(application =='All') {
-									if(datacenter =='NCE'){
-										server = nceServer
-										adminServer = nceAdminServer
-										println "nce servers are: " + server
-										println "nce adminServer : " + adminServer
-										println "appName from bitbucket : " + appName
-									}
-									else if(datacenter =='NCW'){
-										server = ncwServer
-										adminServer = ncwAdminServer
-										println "ncw servers are: " + server
-										println "ncw adminServer : " + adminServer
-										println "appName from bitbucket : " + appName
-									}
-									if(action =='status' || action =='stop'){
-										apiList =appName
-										println apiList
-									}	
-									else if(action =='start'){
-										apiList =reverseApp
-										println apiList
-									}
-									for(app in apiList) {
-										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
-											println action + " on " + app
-											appStartStop(app, server,action)
-										}
-										else if(app.contains("services-server-admin")){
-											println action + " on " + app
-											appStartStop(app, adminServer,action)
-										}
-										else if(app.contains("kafka") || app.contains("zookeeper")){
-											println action + " on " + app
-											kafkaZookeepStartStop(application,app,server,action)
-										}
-									}
-								}
-								else if(application =='payment-edge-api'){
-									paramServer = appServersFromParamArray
-									println "server selected from job parameter: " + paramServer
-									
-									if(action =='status' || action =='stop'){
-										apiList =apiFromParameterArray
-										println apiList
-									}	
-									else if(action =='start'){
-										apiList =apiFromParameterArray.reverse()
-										println apiList
-									}
-									for(app in apiList) {
-										if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
-											println action + " on " + app
-											appStartStop(app, paramServer,action)
-										}
-										else if(app.contains("services-server-admin")){
-											println action + " on " + app
-											appStartStop(app, adminServer,action)
-										}
-										else if(app.contains("kafka") || app.contains("zookeeper")){
-											println action + " on " + app
-											kafkaZookeepStartStop(application,app,paramServer,action)
-										}
-									}
-                                }*/
 								if(application =='All' || (application =='payment-edge-api' && (apiFromParameterArray.contains("All")))) {
 									println "mamta" + apiFromParameterArray
 									if(datacenter =='NCE'){
@@ -146,57 +81,51 @@ pipeline {
 								for(app in apiList) {
 									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
 										println action + " on " + app
-										outputArray =appStartStop(app, server,action)
-										//println outputArray
-										if(!outputArray.isEmpty()){
-											for(oa in outputArray)
+										failedData =appStartStop(app, server,action)
+										//println failedData
+										if(failedData!=null){
+											for(fd in failedData)
 											{
-												println oa
-												//println mamta
+												println fd
+												//ssh fd
 											}	
 										}
 									}
 									else if(app.contains("services-server-admin")){
 										println action + " on " + app
-										outputArray =appStartStop(app, adminServer,action)
-										if(!outputArray.isEmpty()){
-											for(oa in outputArray)
+										failedData =appStartStop(app, adminServer,action)
+										if(failedData!=null){
+											for(fd in failedData)
 											{
-												println oa
-												//println mamta
+												//ssh fd
+												println fd
 											}	
 										}
 									}
 									else if(app.contains("kafka") || app.contains("zookeeper")){
 										println action + " on " + app
-										outputArray =kafkaZookeepStartStop(application,app,server,action)
-										println "mamta"
-										if(outputArray!=null){
-										//if(!outputArray.isEmpty()){
-											for(oa in outputArray)
+										failedData =kafkaZookeepStartStop(application,app,server,action)
+										if(failedData!=null){
+											for(fd in failedData)
 											{
-												println oa
-												//println mamta
+												println fd
+												//ssh fd
 											}	
 										}
 									}
 								}
-								
-								
-								// to publish the output, apiFromParameter will be null if action is performed for ALL
 								def result ='Success'
 								publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
 
-							/*}catch(Exception e) 
+							}catch(Exception e) 
                             {
-                                println "******** ERROR ********"+e
                                 result ='Failed'
 								publishresults = publishresults + "payment-edge-api: " + "" + apiFromParameter + " " +result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
                                 }
-                            }*/
+                            }
                         }
                     }        
                 }
