@@ -264,8 +264,8 @@ pipeline {
 											//println failedData
 											if(failedData!=null){
 												for(fd in failedData)
-												println "inside failed data tp retry"	
 												{
+													println "inside failed data tp retry"	
 													println fd
 													//ssh fd
 												}	
@@ -276,7 +276,6 @@ pipeline {
 											failedData =appStartStop(app, gatewayServer,action)
 											//println failedData
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
@@ -289,7 +288,6 @@ pipeline {
 											failedData =appStartStop(app, configeurekaserver,action)
 											//println failedData
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
@@ -302,7 +300,6 @@ pipeline {
 											failedData =appStartStop(app, adminServer,action)
 											//println failedData
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
@@ -315,7 +312,6 @@ pipeline {
 											failedData =kafkaZookeepStartStop(application,app, kznceServer,action)
 											//println failedData
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
@@ -343,7 +339,6 @@ pipeline {
 											failedData =appStartStop(app, server,action)
 											//println failedData
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
@@ -355,7 +350,6 @@ pipeline {
 											println action + " on " + app
 											failedData =kafkaZookeepStartStop(application,app,server,action)
 											if(failedData!=null){
-												println "inside failed data tp retry"
 												for(fd in failedData)
 												{
 													println fd
