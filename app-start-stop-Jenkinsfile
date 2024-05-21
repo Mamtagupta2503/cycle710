@@ -308,7 +308,7 @@ pipeline {
 										}
 										if(app.contains("kafka")||app.contains("zookeeper")) {
 											println action + " on " + app
-											failedData =appStartStop(app, kznceServer,action)
+											failedData =kafkaZookeepStartStop(app, kznceServer,action)
 											//println failedData
 											if(failedData!=null){
 												for(fd in failedData)
@@ -550,4 +550,3 @@ def startstopcore(String home_folder, Object server,String action){
 		
 	}
 }	
-	
