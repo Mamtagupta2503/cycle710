@@ -106,6 +106,7 @@ pipeline {
 									}
                                 }*/
 								if(application =='All' || (application =='payment-edge-api' && apiFromParameterArray =='All')) {
+									println "-mamta-" +apiFromParameterArray
 									if(datacenter =='NCE'){
 										server = nceServer
 										adminServer = nceAdminServer
