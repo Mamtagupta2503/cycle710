@@ -170,7 +170,9 @@ pipeline {
 									else if(app.contains("kafka") || app.contains("zookeeper")){
 										println action + " on " + app
 										outputArray =kafkaZookeepStartStop(application,app,server,action)
-										if(!outputArray.isEmpty()){
+										println "mamta"
+										if(outputArray!=null){
+										//if(!outputArray.isEmpty()){
 											for(oa in outputArray)
 											{
 												println oa
@@ -437,7 +439,7 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
 	def result =''
-	def failedArray =[]
+	def failedArray =['']
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		try{
