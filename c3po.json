@@ -25,6 +25,15 @@
 		"c3poprodserverncw_vm44",
 		"c3poprodserverncw_vm03"
     ],
+"APP":[
+		"payment-edge-api",
+		"services-server-gateway",
+		"services-server-eureka",
+		"services-server-admin",
+		"services-server-config",
+		"kafka",
+		"zookeeper"	
+	],
 	"GATEWAY_NCE_SERVERS": [
 		"22.240.0.27",
 		"22.240.0.30",
