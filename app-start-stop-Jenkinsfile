@@ -331,45 +331,33 @@ pipeline {
 										apiList =apiFromParameterArray.reverse()
 										println apiList
 									}
-                                }
-								// action starts here
-								for(app in apiList) {
-									if((!app.contains("kafka")) && (!app.contains("zookeeper"))&& (!app.contains("services-server-admin"))){
-										println action + " on " + app
-										failedData =appStartStop(app, server,action)
-										//println failedData
-										if(failedData!=null){
-											for(fd in failedData)
-											{
-												println fd
-												//ssh fd
-											}	
+									
+									for(app in apiList) {
+										if((!app.contains("kafka")) && (!app.contains("zookeeper"))){
+											println action + " on " + app
+											failedData =appStartStop(app, server,action)
+											//println failedData
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
 										}
-									}
-									else if(app.contains("services-server-admin")){
-										println action + " on " + app
-										failedData =appStartStop(app, adminServer,action)
-										if(failedData!=null){
-											for(fd in failedData)
-											{
-												//ssh fd
-												println fd
-											}	
+										else if(app.contains("kafka") || app.contains("zookeeper")){
+											println action + " on " + app
+											failedData =kafkaZookeepStartStop(application,app,server,action)
+											if(failedData!=null){
+												for(fd in failedData)
+												{
+													println fd
+													//ssh fd
+												}	
+											}
 										}
-									}
-									else if(app.contains("kafka") || app.contains("zookeeper")){
-										println action + " on " + app
-										failedData =kafkaZookeepStartStop(application,app,server,action)
-										if(failedData!=null){
-											for(fd in failedData)
-											{
-												println fd
-												//ssh fd
-											}	
-										}
-									}
+									}	
 								}
-								
 								def result ='Success'
 								publishresults = publishresults + "c3po: " + "" + apiFromParameter + " " +result+ "\n"
 							}catch(Exception e) 
