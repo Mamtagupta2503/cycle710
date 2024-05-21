@@ -262,7 +262,7 @@ pipeline {
 											println action + " on " + app
 											failedData =appStartStop(app, c3poServer,action)
 											//println failedData
-											if(failedData!=null || failedData!= ''){
+											if(failedData!=null){
 												for(fd in failedData)
 												{
 													println "inside failed data to retry"	
