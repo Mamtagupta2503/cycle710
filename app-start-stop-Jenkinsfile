@@ -159,10 +159,24 @@ pipeline {
 									else if(app.contains("services-server-admin")){
 										println action + " on " + app
 										outputArray =appStartStop(app, adminServer,action)
+										if(!outputArray.isEmpty()){
+											for(oa in outputArray)
+											{
+												println oa
+												//println mamta
+											}	
+										}
 									}
 									else if(app.contains("kafka") || app.contains("zookeeper")){
 										println action + " on " + app
 										outputArray =kafkaZookeepStartStop(application,app,server,action)
+										if(!outputArray.isEmpty()){
+											for(oa in outputArray)
+											{
+												println oa
+												//println mamta
+											}	
+										}
 									}
 								}
 								
@@ -454,4 +468,4 @@ def startstopcore(String home_folder, Object server,String action){
 		//sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
 		
 	}
-}	
+}
