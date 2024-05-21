@@ -427,7 +427,7 @@ def appStartStop(String appName, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		try{
-			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${a}.sh'"
+			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
 			result ='Success'
 	
 		}catch(Exception e) {
