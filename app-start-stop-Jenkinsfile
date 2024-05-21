@@ -386,6 +386,7 @@ pipeline {
                                 def nceServer = serverdetails.NCE_SERVERS
                                 def ncwServer = serverdetails.NCW_SERVERS
 								def homefolder = serverdetails.DIRECTORY
+								def apiFromParameterArray =Arrays.asList((apiFromParameter).split(","))
 								
 								def appServersFromParamArray = Arrays.asList((appServersFromParam).split(","))
 								def server
