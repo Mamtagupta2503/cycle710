@@ -1,24 +1,30 @@
 {
-    "HAPROXY_SERVERS": [
-    "api-haproxy1-prod.nce.webapps.rr.com",
-    "api-haproxy2-prod.nce.webapps.rr.com",
-    "api-haproxy1-prod.ncw.webapps.rr.com",
-    "api-haproxy2-prod.ncw.webapps.rr.com"
-	 ],
-    "NCE_SERVERS": [
-	"recomm-eng1-prod-nce.webapps.rr.com",
-    "recomm-eng2-prod-nce.webapps.rr.com"
-    ],
-    "NCW_SERVERS": [
-	"recomm-eng1-prod-ncw.webapps.rr.com",
-    "recomm-eng2-prod-ncw.webapps.rr.com"
-    
-    ],
-    "BACKEND": [
-        "www-recomm_eng"
-    ],
+	"HAPROXY_SERVERS": [
+		"142.136.81.137", 
+		"142.136.81.138",
+		"142.136.168.8",
+		"142.136.168.9"
+	],
+	"NCE_SERVERS": [
+		"recomm-eng1-prod-nce.webapps.rr.com",
+		"recomm-eng2-prod-nce.webapps.rr.com"
+	],
+	"NCW_SERVERS": [
+		"recomm-eng1-prod-ncw.webapps.rr.com",
+		"recomm-eng2-prod-ncw.webapps.rr.com"
+	],
+	"CORE_NCE_SERVERS": [
+		"22.240.0.45",
+		"22.240.0.26"
+	],
+	"CORE_NCW_SERVERS": [
+		"22.242.0.21",   
+		"22.242.0.11"    
+	],
+	"BACKEND": [
+		"www-recomm_eng"
+	],
 	"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
-	
-	"DIRECTORY": "/data/apps/css-core/corerec"
 
+	"DIRECTORY": "/data/apps/css-core/corerec"
 }
