@@ -9,8 +9,8 @@ def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
 pipeline {
-    //agent any
-	agent {label 'ncw'}
+    agent any
+	//agent {label 'ncw'}
 
     stages {
         stage('Parallel execution') {
@@ -84,10 +84,10 @@ pipeline {
 										failedData =appStartStop(app, server,action)
 										//println failedData
 										if(failedData!=null){
-											for(fd in failedData)
+											for(retryfd in failedData)
 											{
-												println fd
-												//ssh fd
+												//println retryfd
+												ssh retryfd
 											}	
 										}
 									}
@@ -95,10 +95,10 @@ pipeline {
 										println action + " on " + app
 										failedData =appStartStop(app, adminServer,action)
 										if(failedData!=null){
-											for(fd in failedData)
+											for(retryfd in failedData)
 											{
-												//ssh fd
-												println fd
+												//println retryfd
+												ssh retryfd
 											}	
 										}
 									}
@@ -106,10 +106,10 @@ pipeline {
 										println action + " on " + app
 										failedData =kafkaZookeepStartStop(application,app,server,action)
 										if(failedData!=null){
-											for(fd in failedData)
+											for(retryfd in failedData)
 											{
-												println fd
-												//ssh fd
+												//println retryfd
+												ssh retryfd
 											}	
 										}
 									}
@@ -203,10 +203,10 @@ pipeline {
 											failedData =appStartStop(app, c3poServer,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -215,10 +215,10 @@ pipeline {
 											failedData =appStartStop(app, gatewayServer,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -227,10 +227,10 @@ pipeline {
 											failedData =appStartStop(app, configeurekaserver,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -239,10 +239,10 @@ pipeline {
 											failedData =appStartStop(app, adminServer,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -251,10 +251,10 @@ pipeline {
 											failedData =kafkaZookeepStartStop(application,app, kzserver,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}	
@@ -278,10 +278,10 @@ pipeline {
 											failedData =appStartStop(app, server,action)
 											//println failedData
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -289,10 +289,10 @@ pipeline {
 											println action + " on " + app
 											failedData =kafkaZookeepStartStop(application,app,server,action)
 											if(failedData!=null){
-												for(fd in failedData)
+												for(retryfd in failedData)
 												{
-													println fd
-													//ssh fd
+													//println retryfd
+													ssh retryfd
 												}	
 											}
 										}
@@ -397,8 +397,8 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 		def counter =0
 		for(s in server) {
 			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-			//echo "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
-			sh "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
+			echo "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
+			//sh "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
 			counter = counter +1
 		}
 	}
@@ -421,8 +421,8 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 				c3poCounter = 4
 			}				
 			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-			//echo "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${action}"
-			sh "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${action}"
+			echo "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${action}"
+			//sh "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${action}"
 			
 		}	
 	}
@@ -439,8 +439,8 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 			paymentEdgeApiCounter = 2
 			}
 			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-			//echo "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${action}"
-			sh "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${action}"
+			echo "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${action}"
+			//sh "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${action}"
 			
 		}
 	}
@@ -452,8 +452,8 @@ def appStartStop(String appName, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		try{
-			//println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
-            sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
+			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
+           // sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
 			result ='Success'
 	
 		}catch(Exception e) {
@@ -469,15 +469,15 @@ def appStartStop(String appName, Object server, String action){
 def startstopelasticsearch(Object server,String action){
 	for(s in server) {
 		SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		//echo "sudo systemctl ${action} elasticsearch.service"
-		sh "$SSH_OPTION sudo systemctl ${action} elasticsearch.service"
+		echo "sudo systemctl ${action} elasticsearch.service"
+		//sh "$SSH_OPTION sudo systemctl ${action} elasticsearch.service"
 	}
 }
 def startstopcore(String home_folder, Object server,String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		//echo "$SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
-		sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
+		echo "$SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
+		//sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
 		
 	}
 }
