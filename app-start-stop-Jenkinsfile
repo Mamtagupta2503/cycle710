@@ -388,8 +388,8 @@ pipeline {
 			/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
 			message: " Job URL: ${env.JOB_URL} \n BUILD_NUMBER: ${env.BUILD_NUMBER} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishresults}] ",
 			spaceList: [[spaceId: 'e26bdaf0-e471-11ed-8020-692d324207aa', 
-			spaceName: 'Jenkins Job Status - OPS']]
-			}*/
+			spaceName: 'Jenkins Job Status - OPS']]*/
+			}
 	}
 }
 def kafkaZookeepStartStop(Object application, String appName, Object server, String action){
