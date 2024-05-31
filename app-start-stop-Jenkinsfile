@@ -416,7 +416,7 @@ def kafkaZookeepStartStop(Object application, String appName, Object server, Str
 		
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		try{
-			echo "$SSH_OPTION sudo service ${appName}-${counter} ${a}"
+			echo "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
 			//sh "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
 			result ='Success'
 		}catch(Exception e) {
@@ -437,7 +437,7 @@ def appStartStop(String appName, Object server, String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
 		try{
-			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${a}.sh'"
+			println "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
            // sh "$SSH_OPTION sudo su - oosuser  '/data/apps/${appName}/bin/app-${action}.sh'"
 			result ='Success'
 	
@@ -454,14 +454,14 @@ def appStartStop(String appName, Object server, String action){
 def startstopelasticsearch(Object server,String action){
 	for(s in server) {
 		SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "sudo systemctl ${a} elasticsearch.service"
+		echo "sudo systemctl ${action} elasticsearch.service"
 		//sh "$SSH_OPTION sudo systemctl ${action} elasticsearch.service"
 	}
 }
 def startstopcore(String home_folder, Object server,String action){
 	for(s in server) {
 		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-		echo "$SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${a}.sh'" 
+		echo "$SSH_OPTION sudo su - core_user  '${home_folder}/bin/app-${action}.sh'" 
 		//sh "$SSH_OPTION sudo su - core_user '${home_folder}/bin/app-${action}.sh'"	
 		
 	}
