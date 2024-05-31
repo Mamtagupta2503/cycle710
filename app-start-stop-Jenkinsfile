@@ -9,8 +9,8 @@ def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
 pipeline {
-    agent any
-	//agent {label 'ncw'}
+    //agent any
+	agent {label 'ncw'}
 
     stages {
         stage('Parallel execution') {
@@ -385,65 +385,50 @@ pipeline {
     post {
 		always {
 			println publishresults
-			sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+			/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
 			message: " Job URL: ${env.JOB_URL} \n BUILD_NUMBER: ${env.BUILD_NUMBER} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishresults}] ",
 			spaceList: [[spaceId: 'e26bdaf0-e471-11ed-8020-692d324207aa', 
 			spaceName: 'Jenkins Job Status - OPS']]
-			}
+			}*/
 	}
 }
 def kafkaZookeepStartStop(Object application, String appName, Object server, String action){
-	if(application =='All') {
-		def counter =0
-		for(s in server) {
-			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
+	def counter
+	def result
+	def failedArray =[]
+
+	for(s in server) {
+		if(s =='22.240.0.210'||s== '22.242.0.159' || s == '22.240.20.7'||s == '22.242.20.13'){
+			counter = 0
+		}
+		else if(s =='22.240.0.44'||s =='22.242.0.19' || s =='22.240.20.8'||s == '22.242.20.12'){
+			counter = 1
+		}
+		else if(s=='22.240.0.29'||s == '22.242.0.24' || s =='22.240.20.6'||s == '22.242.20.11'){
+			counter = 2
+		}
+		else if(s =='22.240.0.30'||s =='22.242.0.18'){
+			counter = 3
+		}
+		else if (s =='22.240.0.27'||s =='22.242.0.14'){
+			counter = 4
+		}
+		
+		def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		try{
 			echo "$SSH_OPTION sudo service ${appName}-${counter} ${a}"
 			//sh "$SSH_OPTION sudo service ${appName}-${counter} ${action}"
-			counter = counter +1
+			result ='Success'
+		}catch(Exception e) {
+			result ='Failure'
+			failedArray.add("$SSH_OPTION sudo service ${appName}-${counter} ${action}")			
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+				sh "exit 1"
+			}
 		}
+		
 	}
-	else if(application == 'c3po'){
-		def c3poCounter
-		for(s in server) {
-			if(s =='22.240.0.210'||s== '22.242.0.159'){
-				c3poCounter = 0
-			}
-			else if(s =='22.240.0.44'||s =='22.242.0.19'){
-				c3poCounter = 1
-			}
-			else if(s=='22.240.0.29'||s == '22.242.0.24'){
-				c3poCounter = 2
-			}
-			else if(s =='22.240.0.30'||s =='22.242.0.18'){
-				c3poCounter = 3
-			}
-			else if (s =='22.240.0.27'||s =='22.242.0.14'){
-				c3poCounter = 4
-			}				
-			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-			echo "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${a}"
-			//sh "$SSH_OPTION sudo service ${appName}-${c3poCounter} ${action}"
-			
-		}	
-	}
-	else if(application =='payment-edge-api'){
-		def paymentEdgeApiCounter 
-		for(s in server) {
-			if(s == '22.240.20.7'||s == '22.242.20.13'){
-			paymentEdgeApiCounter = 0
-			}
-			else if(s =='22.240.20.8'||s == '22.242.20.12'){
-			paymentEdgeApiCounter = 1
-			}
-			else if(s =='22.240.20.6'||s == '22.242.20.11'){
-			paymentEdgeApiCounter = 2
-			}
-			def SSH_OPTION="ssh -o LogLevel=error jenkins_worker@${s} -o StrictHostKeyChecking=no"
-			echo "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${a}"
-			//sh "$SSH_OPTION sudo service ${appName}-${paymentEdgeApiCounter} ${action}"
-			
-		}
-	}
+	return failedArray	
 }
 def appStartStop(String appName, Object server, String action){
 	//def appStartStopresult =''
